@@ -24,6 +24,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                 Galeri
               </Link>
+              <Link href="/testimoni" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
+                Testimoni
+              </Link>
               <Link href="/menu" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                 Menu Treatment
               </Link>
