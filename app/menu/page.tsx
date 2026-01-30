@@ -1,6 +1,5 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import fs from "fs";
+import path from "path";
 
 interface Treatment {
   nama: string;
@@ -13,47 +12,30 @@ interface MenuData {
   [key: string]: Treatment[];
 }
 
-export default function MenuPage() {
-  const [menuData, setMenuData] = useState<MenuData>({});
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+export const revalidate = 60;
 
-  useEffect(() => {
-    fetch("/menu.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setMenuData(data);
-        const firstKey = Object.keys(data)[0];
-        setSelectedCategory(firstKey);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error loading menu:", err);
-        setLoading(false);
-      });
-  }, []);
+const categories: { [key: string]: string } = {
+  anti_acne_treatment: "Anti Acne",
+  post_acne_treatment: "Post Acne",
+  anti_aging_treatment: "Anti Aging",
+  flex_pigment_treatment: "Flek & Pigment",
+  glow_skin_treatment: "Glow Skin",
+  body_treatment: "Body Treatment",
+  lymphatic_treatment: "Lymphatic",
+  hair_treatment: "Hair Treatment",
+  nail_treatment: "Nail/Hand/Foot",
+};
 
-  const categories: { [key: string]: string } = {
-    anti_acne_treatment: "Anti Acne",
-    post_acne_treatment: "Post Acne",
-    anti_aging_treatment: "Anti Aging",
-    flex_pigment_treatment: "Flek & Pigment",
-    glow_skin_treatment: "Glow Skin",
-    body_treatment: "Body Treatment",
-    lymphatic_treatment: "Lymphatic",
-    hair_treatment: "Hair Treatment",
-    nail_treatment: "Nail/Hand/Foot",
-  };
+async function getMenuData(): Promise<MenuData> {
+  const filePath = path.join(process.cwd(), "public", "menu.json");
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  return JSON.parse(fileContent);
+}
 
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-xl text-gray-600">Loading menu...</p>
-      </main>
-    );
-  }
-
-  const treatments = selectedCategory ? menuData[selectedCategory] || [] : [];
+export default async function MenuPage() {
+  const menuData = await getMenuData();
+  const firstCategory = Object.keys(menuData)[0];
+  const treatments = menuData[firstCategory] || [];
 
   return (
     <main className="min-h-screen bg-white">
@@ -71,17 +53,17 @@ export default function MenuPage() {
           {/* Category Tabs */}
           <div className="mb-12 flex flex-wrap gap-3 justify-center">
             {Object.entries(categories).map(([key, label]) => (
-              <button
+              <a
                 key={key}
-                onClick={() => setSelectedCategory(key)}
+                href={`/menu?category=${key}`}
                 className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                  selectedCategory === key
+                  key === firstCategory
                     ? "bg-pink-600 text-white shadow-lg"
                     : "bg-white text-pink-600 border-2 border-pink-600 hover:bg-pink-50"
                 }`}
               >
                 {label}
-              </button>
+              </a>
             ))}
           </div>
 
