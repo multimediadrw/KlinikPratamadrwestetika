@@ -1,35 +1,125 @@
-export const revalidate = 60;
+"use client";
+
+import { useState, useEffect } from "react";
+
+interface Treatment {
+  nama: string;
+  layanan: string[];
+  harga: string;
+  manfaat: string;
+}
+
+interface MenuData {
+  [key: string]: Treatment[];
+}
 
 export default function MenuPage() {
-  const categories = [
-    { name: 'Anti Acne', count: '9 treatment' },
-    { name: 'Post Acne', count: '2 treatment' },
-    { name: 'Anti Aging', count: '4 treatment' },
-    { name: 'Flek & Pigment', count: '14 treatment' },
-    { name: 'Glow Skin', count: '2 treatment' },
-    { name: 'Body Treatment', count: '3 treatment' },
-    { name: 'Lymphatic', count: '2 treatment' },
-    { name: 'Hair Treatment', count: '2 treatment' },
-    { name: 'Nail/Hand/Foot', count: '2 treatment' },
-  ];
+  const [menuData, setMenuData] = useState<MenuData>({});
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/menu.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setMenuData(data);
+        const firstKey = Object.keys(data)[0];
+        setSelectedCategory(firstKey);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading menu:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const categories: { [key: string]: string } = {
+    anti_acne_treatment: "Anti Acne",
+    post_acne_treatment: "Post Acne",
+    anti_aging_treatment: "Anti Aging",
+    flex_pigment_treatment: "Flek & Pigment",
+    glow_skin_treatment: "Glow Skin",
+    body_treatment: "Body Treatment",
+    lymphatic_treatment: "Lymphatic",
+    hair_treatment: "Hair Treatment",
+    nail_treatment: "Nail/Hand/Foot",
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-xl text-gray-600">Loading menu...</p>
+      </main>
+    );
+  }
+
+  const treatments = selectedCategory ? menuData[selectedCategory] || [] : [];
 
   return (
     <main className="min-h-screen bg-white">
+      {/* Header */}
       <section className="bg-gradient-to-r from-pink-600 to-pink-500 text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-4">Menu Treatment</h1>
-          <p className="text-xl">Pilihan treatment lengkap dengan harga terjangkau</p>
+          <p className="text-xl">Pilih treatment yang sesuai dengan kebutuhan Anda</p>
         </div>
       </section>
 
-      <section className="py-20 bg-pink-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-pink-900 text-center mb-16">Kategori Treatment</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {categories.map((cat) => (
-              <div key={cat.name} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <h3 className="text-xl font-bold text-pink-900 mb-2">{cat.name}</h3>
-                <p className="text-gray-600">{cat.count}</p>
+      {/* Content */}
+      <section className="py-12 bg-pink-50">
+        <div className="container mx-auto px-4 max-w-6xl">
+          {/* Category Tabs */}
+          <div className="mb-12 flex flex-wrap gap-3 justify-center">
+            {Object.entries(categories).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setSelectedCategory(key)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all ${
+                  selectedCategory === key
+                    ? "bg-pink-600 text-white shadow-lg"
+                    : "bg-white text-pink-600 border-2 border-pink-600 hover:bg-pink-50"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Treatments Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {treatments.map((treatment, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 border-t-4 border-pink-600"
+              >
+                <h3 className="text-xl font-bold text-pink-900 mb-3">
+                  {treatment.nama}
+                </h3>
+                <p className="text-gray-700 mb-4 text-sm">{treatment.manfaat}</p>
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-gray-600 mb-2">
+                    Layanan Termasuk:
+                  </p>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    {treatment.layanan.map((service, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="text-pink-600 mr-2">•</span>
+                        {service}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="border-t pt-4 flex items-center justify-between">
+                  <span className="text-2xl font-bold text-pink-600">
+                    {treatment.harga}
+                  </span>
+                  <a
+                    href="/lokasi-kontak"
+                    className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm font-semibold"
+                  >
+                    Pesan
+                  </a>
+                </div>
               </div>
             ))}
           </div>
