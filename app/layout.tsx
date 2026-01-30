@@ -40,18 +40,11 @@ export default function RootLayout({
                 <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   Beranda
                 </Link>
-                <Link href="/tentang" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
-                  Tentang Kami
-                </Link>
-                <Link href="/layanan" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
-                  Layanan
-                </Link>
+
                 <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   Galeri
                 </Link>
-                <Link href="/harga" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
-                  Harga
-                </Link>
+
                 <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   FAQ
                 </Link>
