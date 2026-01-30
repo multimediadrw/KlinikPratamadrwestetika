@@ -1,5 +1,6 @@
-'use client';
 
+
+export const dynamic = 'force-dynamic';
 export default function KontakPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-pink-50 to-white">

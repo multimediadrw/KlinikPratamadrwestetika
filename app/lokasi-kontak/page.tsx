@@ -1,5 +1,6 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
 interface Branch {
   nama: string;
   alamat: string;
