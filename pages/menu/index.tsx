@@ -1,4 +1,3 @@
-export const revalidate = 60;
 
 const categories: { [key: string]: string } = {
   anti_acne_treatment: "Anti Acne",

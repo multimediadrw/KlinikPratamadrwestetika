@@ -1,6 +1,5 @@
-import { AnimatedMaps } from "../components/animated-maps";
+import { AnimatedMaps } from "../../components/animated-maps";
 
-export const revalidate = 60;
 
 export default function LokasiKontakPage() {
   const branches = [
