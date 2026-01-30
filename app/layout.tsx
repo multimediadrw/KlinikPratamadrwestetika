@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +23,15 @@ export default function RootLayout({
         <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-md z-50">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-20">
-              <Link href="/" className="text-2xl font-bold text-pink-600">
-                DRW Estetika
+              <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Image 
+                  src="/logo-drw.jpg" 
+                  alt="Klinik Pratama DRW Estetika" 
+                  width={180}
+                  height={60}
+                  className="h-16 w-auto object-contain"
+                  priority
+                />
               </Link>
               
               <div className="hidden md:flex items-center space-x-8">
