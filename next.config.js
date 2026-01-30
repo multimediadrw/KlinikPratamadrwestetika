@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  staticPageGenerationTimeout: 0,
+  output: 'export',
 };
-
 module.exports = nextConfig;
