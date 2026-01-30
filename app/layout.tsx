@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className={`${inter.className} font-sans`}>
-        {/* Floating WhatsApp Button */}
+        {/* Floating WhatsApp Button - Client Component */}
         <FloatingWhatsApp />
 
         {/* Navigation */}
@@ -48,9 +48,6 @@ export default function RootLayout({
                 </Link>
                 <Link href="/layanan" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   Layanan
-                </Link>
-                <Link href="/lokasi" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
-                  Lokasi
                 </Link>
                 <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   Galeri
