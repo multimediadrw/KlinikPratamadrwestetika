@@ -113,7 +113,7 @@ export default function LayananPage() {
               <ul className="space-y-2 text-gray-700">
                 <li>✓ Mengurangi kerutan dahi</li>
                 <li>✓ Menghaluskan garis senyum</li>
-                <li>✓ Mengatasi crow's feet</li>
+                <li>✓ Mengatasi crow&apos;s feet</li>
                 <li>✓ Hasil bertahan 4-6 bulan</li>
               </ul>
             </div>

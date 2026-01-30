@@ -150,7 +150,7 @@ export default function GaleriPage() {
                 <div className="text-yellow-500 mb-3">
                   {'⭐'.repeat(testimonial.rating)}
                 </div>
-                <p className="text-gray-700 italic">"{testimonial.text}"</p>
+                <p className="text-gray-700 italic">&quot;{testimonial.text}&quot;</p>
               </div>
             ))}
           </div>

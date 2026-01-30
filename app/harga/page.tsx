@@ -142,7 +142,7 @@ export default function HargaPage() {
               <p className="text-gray-600 text-sm mb-4">*Harga tergantung area dan jumlah unit</p>
               <ul className="space-y-2 text-gray-700 mb-6">
                 <li>✓ Dahi: Rp 1.500.000 - 2.000.000</li>
-                <li>✓ Crow's feet: Rp 1.500.000</li>
+                <li>✓ Crow&apos;s feet: Rp 1.500.000</li>
                 <li>✓ Glabella: Rp 1.500.000</li>
                 <li>✓ Hasil bertahan 4-6 bulan</li>
               </ul>

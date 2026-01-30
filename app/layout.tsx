@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
-import PremiumFooter from "./components/PremiumFooter";
-import FloatingWhatsApp from "./components/FloatingWhatsApp";
+// Components removed
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -21,8 +20,6 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className={`${inter.className} font-sans`}>
-        {/* Floating WhatsApp Button - Client Component */}
-        <FloatingWhatsApp />
 
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-md z-50">
@@ -81,8 +78,10 @@ export default function RootLayout({
           {children}
         </div>
 
-        {/* Premium Footer */}
-        <PremiumFooter />
+        {/* Footer */}
+        <footer className="bg-gray-900 text-white py-12 text-center">
+          <p className="text-gray-400 text-sm">© 2026 Klinik Pratama DRW Estetika. Bagian dari PT DRW Corpora. Melayani dengan hati.</p>
+        </footer>
       </body>
     </html>
   );
