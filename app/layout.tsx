@@ -45,17 +45,19 @@ export default function RootLayout({
                   Galeri
                 </Link>
 
-                <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
-                  FAQ
-                </Link>
                 <Link href="/menu" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
                   Menu Treatment
                 </Link>
+
+                <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium transition-colors">
+                  FAQ
+                </Link>
+
                 <Link 
-                  href="/kontak" 
+                  href="/lokasi-kontak" 
                   className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg"
                 >
-                  Kontak
+                  Lokasi & Kontak
                 </Link>
               </div>
 
