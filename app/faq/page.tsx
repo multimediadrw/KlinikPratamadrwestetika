@@ -1,6 +1,6 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 import { useState } from 'react';
 
 export default function FAQPage() {

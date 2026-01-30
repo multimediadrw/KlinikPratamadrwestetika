@@ -1,6 +1,6 @@
 
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 export default function KontakPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
