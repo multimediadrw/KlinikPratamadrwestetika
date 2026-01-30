@@ -1,3 +1,5 @@
+'use client';
+
 export default function KontakPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-pink-50 to-white">
