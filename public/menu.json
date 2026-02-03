@@ -1,0 +1,49 @@
+{
+  "klinik": "Klinik Pratama DRW Estetika",
+  "kontak": "0857 1285 9999",
+  "sumber": "Daftar Menu Treatment - Rev Harga Before PWR",
+  "menu_lengkap": {
+    "anti_acne_treatment": [
+      { "nama": "Acne Solution (Basic)", "layanan": ["Facial Acne", "PDT", "Oxy Glow Acne"], "harga": "Rp 177.600", "manfaat": "Perawatan dasar untuk meredakan jerawat aktif dengan terapi cahaya dan oksigen.", "source": [9, 10, 11, 12, 27] },
+      { "nama": "Action Acne Solution (Basic)", "layanan": ["Facial Acne", "Detox", "Mesotheraphy"], "harga": "Rp 193.500", "manfaat": "Detoksifikasi kulit dan pemberian nutrisi mendalam untuk wajah berjerawat.", "source": [13, 14, 15, 16, 17, 28] },
+      { "nama": "Acne Resurface (Basic)", "layanan": ["Facial Acne", "Chemical Peeling", "Mesotheraphy"], "harga": "Rp 259.562", "manfaat": "Memperbaiki tekstur kulit yang tidak rata akibat bekas jerawat.", "source": [18, 19, 20, 21, 22, 30] },
+      { "nama": "Complete Acne Fighter (Basic)", "layanan": ["Facial Acne", "Chemical Peeling", "DPL"], "harga": "Rp 300.000", "manfaat": "Solusi intensif untuk membunuh bakteri jerawat dan mencerahkan noda.", "source": [23, 24, 25, 26, 31] },
+      { "nama": "3 In 1 Korean Acne Glow (Premium)", "layanan": ["Korean Snow White Facial Acne", "Oxy Glow Acne", "PDT"], "harga": "Rp 253.690", "manfaat": "Perawatan jerawat ala Korea untuk hasil kulit yang bersih dan bercahaya.", "source": [33, 34, 35, 36, 38, 39] },
+      { "nama": "Inject Spot Go", "layanan": ["Inject Acne"], "harga": "Rp 83.000/Titik", "manfaat": "Suntikan langsung pada jerawat untuk mempercepat penyembuhan instan.", "source": [60, 61, 62, 65] }
+    ],
+    "post_acne_treatment": [
+      { "nama": "Acne Repair Plasma (Basic)", "layanan": ["Facial Acne", "PRP"], "harga": "Rp 638.250", "manfaat": "Menggunakan plasma darah (PRP) untuk memperbaiki struktur bopeng.", "source": [68, 69, 70, 71, 72] },
+      { "nama": "Korean Acne Repair Plasma (Premium)", "layanan": ["Korean Snow White Facial Acne", "PRP"], "harga": "Rp 750.000 (Start From)", "manfaat": "Regenerasi kulit tingkat tinggi dengan standar Snow White Korea.", "source": [74, 75, 91] }
+    ],
+    "anti_aging_treatment": [
+      { "nama": "Luminous Youth Glow Package", "layanan": ["Facial White", "RF All", "Oxy Glow"], "harga": "Rp 291.500", "manfaat": "Mengencangkan kulit wajah dan memberikan efek kilau muda.", "source": [78, 79, 80, 81, 82, 88] },
+      { "nama": "Signature DNA Youthful Glow", "layanan": ["Facial White", "RF All", "Luxury DNA Salmon"], "harga": "Rp 723.500", "manfaat": "Peremajaan kulit menggunakan DNA Salmon untuk hasil kulit kenyal.", "source": [83, 84, 85, 86, 87, 91] },
+      { "nama": "Platinum Anti-Aging & Radiance", "layanan": ["Korean Snow White Facial White", "RF All", "Luxury DNA Salmon"], "harga": "Rp 389.665", "manfaat": "Kombinasi premium untuk mengangkat kulit kendur dan mencerahkan.", "source": [100, 101, 102, 103, 104, 106] }
+    ],
+    "flex_pigment_treatment": [
+      { "nama": "Signature Melasma Renewal Package", "layanan": ["Facial White", "DPL Pigment", "PICO Pigment Removal"], "harga": "Rp 466.000", "manfaat": "Menghilangkan flek hitam membandel dengan teknologi laser PICO.", "source": [151, 152, 153, 155, 156, 157] },
+      { "nama": "Luxe Snow White Pico Glow", "layanan": ["Korean Snow White Facial White", "PICO Pigment Removal", "DPL Pigment"], "harga": "Rp 564.490", "manfaat": "Teknologi laser tercanggih untuk wajah bersih dari pigmentasi.", "source": [200, 201, 202, 203, 205, 206] }
+    ],
+    "glow_skin_treatment": [
+      { "nama": "Crystal White Glow Care", "layanan": ["Facial White", "PDT", "Oxy Glow"], "harga": "Rp 177.600", "manfaat": "Menjaga kecerahan kulit agar tetap putih bersih.", "source": [209, 210, 211, 212, 213, 216] },
+      { "nama": "Platinum Radiance Glow", "layanan": ["Facial White", "Skin Booster"], "harga": "Rp 475.000", "manfaat": "Meningkatkan kualitas kulit secara instan agar tampak bercahaya.", "source": [241, 242, 243, 278] }
+    ],
+    "body_treatment": [
+      { "nama": "Glow Relax Package", "layanan": ["Massage", "Lulur"], "harga": "Rp 199.000", "manfaat": "Memberikan relaksasi tubuh dan kehalusan kulit.", "source": [296, 298] },
+      { "nama": "Milk Luxury Body Spa", "layanan": ["Massage", "Lulur", "Milk Bath"], "harga": "Rp 250.000", "manfaat": "Melembapkan dan memutihkan kulit tubuh dengan mandi susu.", "source": [299, 300] },
+      { "nama": "Detox Relaxation Spa", "layanan": ["Massage", "Lulur", "Sauna"], "harga": "Rp 250.000", "manfaat": "Mengeluarkan racun tubuh melalui uap sauna.", "source": [304, 305] }
+    ],
+    "lymphatic_treatment": [
+      { "nama": "Full Body Lymphatic Massage", "layanan": ["Detoksifikasi", "Metabolisme"], "harga": "Rp 400.000", "manfaat": "Mempercepat pemulihan tubuh dan memperbaiki metabolisme.", "source": [313, 319] },
+      { "nama": "Lymphatic Slimming Massage", "layanan": ["Slimming", "Cellulite Reduction"], "harga": "Rp 200.000", "manfaat": "Membantu mengecilkan tubuh dan mengurangi selulit.", "source": [318, 326] }
+    ],
+    "hair_treatment": [
+      { "nama": "Silky Glow Hair Spa", "layanan": ["Hair Spa"], "harga": "Rp 78.000", "manfaat": "Memberikan kilau dan kelembutan pada rambut.", "source": [328] },
+      { "nama": "Luxe Hair Treatment Package", "layanan": ["Hairspa", "Catok", "Vitamin"], "harga": "Rp 150.000", "manfaat": "Perawatan rambut lengkap untuk hasil yang rapi dan sehat.", "source": [328] }
+    ],
+    "nail_hand_foot_aesthetic": [
+      { "nama": "Manicure Spa", "layanan": ["Manicure Spa"], "harga": "Rp 145.000", "manfaat": "Perawatan kuku tangan lengkap agar tampak cantik.", "source": [333, 335] },
+      { "nama": "Pedicure Spa Callus Remover", "layanan": ["Pedicure", "Callus Removal"], "harga": "Rp 170.000", "manfaat": "Membersihkan kuku kaki dan menghilangkan kulit kapalan.", "source": [338, 341] }
+    ]
+  }
+}
