@@ -23,8 +23,6 @@ export default function RootLayout({
               </Link>
               <div className="hidden md:flex items-center space-x-8">
                 <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium">Beranda</Link>
-                <Link href="/tentang" className="text-gray-700 hover:text-pink-600 font-medium">Tentang</Link>
-                <Link href="/layanan" className="text-gray-700 hover:text-pink-600 font-medium">Layanan</Link>
                 <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium">Galeri</Link>
                 <Link href="/harga" className="text-gray-700 hover:text-pink-600 font-medium">Harga</Link>
                 <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium">FAQ</Link>
@@ -46,18 +44,10 @@ export default function RootLayout({
                 <p className="text-pink-200">Klinik kecantikan profesional dengan teknologi terkini</p>
               </div>
               <div>
-                <h4 className="text-lg font-semibold mb-4">Layanan</h4>
+                <h4 className="text-lg font-semibold mb-4">Menu</h4>
                 <ul className="space-y-2 text-pink-200">
-                  <li><Link href="/layanan" className="hover:text-white">Facial Treatment</Link></li>
-                  <li><Link href="/layanan" className="hover:text-white">Advanced Treatment</Link></li>
-                  <li><Link href="/layanan" className="hover:text-white">Injection</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-lg font-semibold mb-4">Informasi</h4>
-                <ul className="space-y-2 text-pink-200">
-                  <li><Link href="/tentang" className="hover:text-white">Tentang Kami</Link></li>
                   <li><Link href="/galeri" className="hover:text-white">Galeri</Link></li>
+                  <li><Link href="/harga" className="hover:text-white">Harga</Link></li>
                   <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
                 </ul>
               </div>
