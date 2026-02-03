@@ -10,7 +10,7 @@ export default function KontakPage() {
     {
       id: 1,
       name: 'Magelang',
-      position: { top: '20%', left: '15%' },
+      mapImage: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=500&fit=crop',
       alamat: 'Jl. Merdeka No. 123, Magelang, Jawa Tengah 56115',
       telepon: '+62 274-123-456',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -18,7 +18,7 @@ export default function KontakPage() {
     {
       id: 2,
       name: 'Purworejo',
-      position: { top: '30%', right: '20%' },
+      mapImage: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=800&h=500&fit=crop',
       alamat: 'Jl. Ahmad Yani No. 456, Purworejo, Jawa Tengah 54111',
       telepon: '+62 752-34-567',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -26,7 +26,7 @@ export default function KontakPage() {
     {
       id: 3,
       name: 'Kutoarjo',
-      position: { bottom: '20%', left: '25%' },
+      mapImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=500&fit=crop',
       alamat: 'Jl. Diponegoro No. 789, Kutoarjo, Jawa Tengah 54211',
       telepon: '+62 756-45-678',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -47,96 +47,84 @@ export default function KontakPage() {
         </div>
       </section>
 
-      {/* Map Section with Location Overlays */}
-      <section className="py-20 bg-gray-50">
+      {/* Location Selector & Map Section */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            {/* Map Container */}
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 bg-white">
-              <img
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1000&h=600&fit=crop"
-                alt="Lokasi Klinik DRW Estetika"
-                className="w-full h-full object-cover"
-              />
-
-              {/* Location Markers */}
+          <div className="max-w-4xl mx-auto">
+            {/* Location Tabs */}
+            <div className="flex justify-center gap-4 mb-12">
               {locations.map((location) => (
                 <button
                   key={location.id}
                   onClick={() => setSelectedLocation(location.id)}
-                  className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group"
-                  style={location.position}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    selectedLocation === location.id
+                      ? 'bg-pink-600 text-white shadow-lg scale-105'
+                      : 'bg-pink-100 text-pink-700 hover:bg-pink-200'
+                  }`}
                 >
-                  {/* Marker Circle */}
-                  <div
-                    className={`relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ${
-                      selectedLocation === location.id
-                        ? 'bg-pink-600 scale-125 shadow-lg'
-                        : 'bg-white border-4 border-pink-400 hover:scale-110'
-                    }`}
-                  >
-                    <span className={`text-lg font-bold ${selectedLocation === location.id ? 'text-white' : 'text-pink-600'}`}>
-                      📍
-                    </span>
-                  </div>
-
-                  {/* Label Badge */}
-                  <div
-                    className={`absolute top-full mt-3 px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all duration-300 ${
-                      selectedLocation === location.id
-                        ? 'bg-pink-600 text-white shadow-lg'
-                        : 'bg-white text-pink-600 border-2 border-pink-200 group-hover:bg-pink-50'
-                    }`}
-                  >
-                    {location.name}
-                  </div>
+                  {location.name}
                 </button>
               ))}
             </div>
 
-            {/* Location Details Below Map */}
+            {/* Map Container */}
             {selected && (
-              <div className="mt-12 bg-white rounded-2xl p-8 shadow-lg border-2 border-pink-100">
-                <div className="grid md:grid-cols-3 gap-8">
-                  {/* Alamat */}
-                  <div>
-                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">📍</span> Alamat
-                    </h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      {selected.alamat}
-                    </p>
-                  </div>
+              <div className="space-y-8">
+                {/* Map Image */}
+                <div className="rounded-2xl overflow-hidden shadow-2xl h-96 bg-gray-200">
+                  <img
+                    src={selected.mapImage}
+                    alt={`Lokasi ${selected.name}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-                  {/* Telepon */}
-                  <div>
-                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">📞</span> Telepon
-                    </h3>
-                    <a
-                      href={`tel:${selected.telepon.replace(/\s/g, '')}`}
-                      className="text-pink-600 hover:text-pink-700 font-semibold text-lg block mb-4"
-                    >
-                      {selected.telepon}
-                    </a>
-                    <Button asChild className="w-full">
-                      <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
-                        💬 Chat WhatsApp
+                {/* Location Details Below Map */}
+                <div className="bg-pink-50 rounded-2xl p-8 border-2 border-pink-200">
+                  <h2 className="text-3xl font-bold text-pink-900 mb-8">{selected.name}</h2>
+
+                  <div className="grid md:grid-cols-3 gap-8">
+                    {/* Alamat */}
+                    <div>
+                      <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                        <span className="text-2xl">📍</span> Alamat
+                      </h3>
+                      <p className="text-gray-700 leading-relaxed">
+                        {selected.alamat}
+                      </p>
+                    </div>
+
+                    {/* Telepon */}
+                    <div>
+                      <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                        <span className="text-2xl">📞</span> Telepon
+                      </h3>
+                      <a
+                        href={`tel:${selected.telepon.replace(/\s/g, '')}`}
+                        className="text-pink-600 hover:text-pink-700 font-semibold text-lg block mb-4"
+                      >
+                        {selected.telepon}
                       </a>
-                    </Button>
-                  </div>
+                      <Button asChild className="w-full">
+                        <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
+                          💬 Chat WhatsApp
+                        </a>
+                      </Button>
+                    </div>
 
-                  {/* Jam Operasional */}
-                  <div>
-                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
-                      <span className="text-2xl">⏰</span> Jam Operasional
-                    </h3>
-                    <div className="text-gray-700 space-y-1">
-                      {selected.jam.split('\n').map((line, idx) => (
-                        <p key={idx} className="text-sm">
-                          {line}
-                        </p>
-                      ))}
+                    {/* Jam Operasional */}
+                    <div>
+                      <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                        <span className="text-2xl">⏰</span> Jam Operasional
+                      </h3>
+                      <div className="text-gray-700 space-y-1">
+                        {selected.jam.split('\n').map((line, idx) => (
+                          <p key={idx} className="text-sm">
+                            {line}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
