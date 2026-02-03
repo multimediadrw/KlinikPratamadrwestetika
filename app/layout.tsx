@@ -15,11 +15,11 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="bg-white">
-        <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-md z-50">
+        <nav className="fixed top-0 left-0 right-0 bg-transparent backdrop-blur-sm z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-20">
-              <Link href="/" className="text-2xl font-bold text-pink-600">
-                DRW Estetika
+              <Link href="/" className="flex items-center gap-2">
+                <img src="/logo.png" alt="DRW Estetika" className="h-16 w-auto" />
               </Link>
               <div className="hidden md:flex items-center space-x-8">
                 <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium">Beranda</Link>
