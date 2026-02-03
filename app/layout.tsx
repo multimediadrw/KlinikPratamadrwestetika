@@ -24,6 +24,7 @@ export default function RootLayout({
               <div className="hidden md:flex items-center space-x-8">
                 <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium">Beranda</Link>
                 <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium">Galeri</Link>
+                <Link href="/testimoni" className="text-gray-700 hover:text-pink-600 font-medium">Testimoni</Link>
                 <Link href="/harga" className="text-gray-700 hover:text-pink-600 font-medium">Harga</Link>
                 <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium">FAQ</Link>
                 <Link href="/kontak" className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full font-semibold">Kontak</Link>
@@ -47,6 +48,7 @@ export default function RootLayout({
                 <h4 className="text-lg font-semibold mb-4">Menu</h4>
                 <ul className="space-y-2 text-pink-200">
                   <li><Link href="/galeri" className="hover:text-white">Galeri</Link></li>
+                  <li><Link href="/testimoni" className="hover:text-white">Testimoni</Link></li>
                   <li><Link href="/harga" className="hover:text-white">Harga</Link></li>
                   <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
                 </ul>
