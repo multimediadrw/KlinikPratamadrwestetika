@@ -2,18 +2,18 @@ import Image from 'next/image';
 
 export default function GaleriPage() {
   const facilityImages = [
-    { id: 1, title: 'Ruang Konsultasi Modern', image: '/DSC00303.JPG' },
-    { id: 2, title: 'Ruang Treatment Premium', image: '/DSC00368.JPG' },
-    { id: 3, title: 'Peralatan Medis Terkini', image: '/DSC00924.JPG' },
-    { id: 4, title: 'Fasilitas Sterilisasi', image: '/DSC00980.JPG' },
-    { id: 5, title: 'Area Tunggu Pasien', image: '/DSC00981.JPG' },
+    { id: 1, title: 'Ruang Konsultasi', image: '/DSC00303.JPG' },
+    { id: 2, title: 'Ruang Treatment', image: '/DSC00368.JPG' },
+    { id: 3, title: 'Peralatan Medis', image: '/DSC00924.JPG' },
+    { id: 4, title: 'Area Sterilisasi', image: '/DSC00980.JPG' },
+    { id: 5, title: 'Ruang Tunggu', image: '/DSC00981.JPG' },
     { id: 6, title: 'Ruang Operasi', image: '/DSC00984.JPG' },
     { id: 7, title: 'Teknologi Laser', image: '/DSC01022.JPG' },
-    { id: 8, title: 'Ruang Recovery', image: '/DSC01715.JPG' },
-    { id: 9, title: 'Fasilitas Laboratorium', image: '/DSC01721.JPG' },
-    { id: 10, title: 'Ruang Perawatan Khusus', image: '/DSC02863.JPG' },
+    { id: 8, title: 'Ruang Pemulihan', image: '/DSC01715.JPG' },
+    { id: 9, title: 'Laboratorium', image: '/DSC01721.JPG' },
+    { id: 10, title: 'Ruang Perawatan', image: '/DSC02863.JPG' },
     { id: 11, title: 'Area Administrasi', image: '/DSC02868.JPG' },
-    { id: 12, title: 'Fasilitas Parkir', image: '/IMG_1124.JPG' },
+    { id: 12, title: 'Area Parkir', image: '/IMG_1124.JPG' },
     { id: 13, title: 'Lobby Klinik', image: '/IMG_1127.JPG' },
     { id: 14, title: 'Ruang Edukasi', image: '/IMG_1157.JPG' },
     { id: 15, title: 'Fasilitas Tambahan', image: '/MRY03299.JPG' },
@@ -56,44 +56,6 @@ export default function GaleriPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-pink-900 text-center mb-12">Testimoni Pasien</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="bg-pink-50 p-8 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <span className="text-4xl mr-3">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p className="text-gray-700 mb-4">
-                "Hasil treatment saya sangat memuaskan! Kulit terasa lebih cerah dan segar. Dokter dan staff sangat profesional dan ramah."
-              </p>
-              <p className="font-semibold text-pink-900">- Siti Nurhaliza</p>
-            </div>
-
-            <div className="bg-pink-50 p-8 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <span className="text-4xl mr-3">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p className="text-gray-700 mb-4">
-                "Saya sudah mencoba beberapa treatment dan semuanya memberikan hasil yang bagus. Harga juga sangat kompetitif!"
-              </p>
-              <p className="font-semibold text-pink-900">- Rina Wijaya</p>
-            </div>
-
-            <div className="bg-pink-50 p-8 rounded-xl shadow-md">
-              <div className="flex items-center mb-4">
-                <span className="text-4xl mr-3">⭐⭐⭐⭐⭐</span>
-              </div>
-              <p className="text-gray-700 mb-4">
-                "Klinik ini benar-benar terpercaya. Dokter menjelaskan setiap treatment dengan detail dan tidak ada biaya tersembunyi."
-              </p>
-              <p className="font-semibold text-pink-900">- Dewi Lestari</p>
-            </div>
           </div>
         </div>
       </section>
