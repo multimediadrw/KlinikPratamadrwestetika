@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/app/components/ui/button';
+import { LocationMap } from '@/app/components/ui/expand-map';
 
 export default function KontakPage() {
   const [selectedLocation, setSelectedLocation] = useState<number>(1);
@@ -10,7 +11,6 @@ export default function KontakPage() {
     {
       id: 1,
       name: 'Magelang',
-      mapImage: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=500&fit=crop',
       alamat: 'Jl. Merdeka No. 123, Magelang, Jawa Tengah 56115',
       telepon: '+62 274-123-456',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -18,7 +18,6 @@ export default function KontakPage() {
     {
       id: 2,
       name: 'Purworejo',
-      mapImage: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=800&h=500&fit=crop',
       alamat: 'Jl. Ahmad Yani No. 456, Purworejo, Jawa Tengah 54111',
       telepon: '+62 752-34-567',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -26,7 +25,6 @@ export default function KontakPage() {
     {
       id: 3,
       name: 'Kutoarjo',
-      mapImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&h=500&fit=crop',
       alamat: 'Jl. Diponegoro No. 789, Kutoarjo, Jawa Tengah 54211',
       telepon: '+62 756-45-678',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
@@ -71,12 +69,12 @@ export default function KontakPage() {
             {/* Map Container */}
             {selected && (
               <div className="space-y-8">
-                {/* Map Image */}
-                <div className="rounded-2xl overflow-hidden shadow-2xl h-96 bg-gray-200">
-                  <img
-                    src={selected.mapImage}
-                    alt={`Lokasi ${selected.name}`}
-                    className="w-full h-full object-cover"
+                {/* Location Map Component */}
+                <div className="flex justify-center">
+                  <LocationMap
+                    location={selected.name}
+                    coordinates={selected.alamat}
+                    className="w-full max-w-sm"
                   />
                 </div>
 
