@@ -1,8 +1,40 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/app/components/ui/button';
 
 export default function KontakPage() {
+  const [selectedLocation, setSelectedLocation] = useState<number>(1);
+
+  const locations = [
+    {
+      id: 1,
+      name: 'Magelang',
+      position: { top: '20%', left: '15%' },
+      alamat: 'Jl. Merdeka No. 123, Magelang, Jawa Tengah 56115',
+      telepon: '+62 274-123-456',
+      jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
+    },
+    {
+      id: 2,
+      name: 'Purworejo',
+      position: { top: '30%', right: '20%' },
+      alamat: 'Jl. Ahmad Yani No. 456, Purworejo, Jawa Tengah 54111',
+      telepon: '+62 752-34-567',
+      jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
+    },
+    {
+      id: 3,
+      name: 'Kutoarjo',
+      position: { bottom: '20%', left: '25%' },
+      alamat: 'Jl. Diponegoro No. 789, Kutoarjo, Jawa Tengah 54211',
+      telepon: '+62 756-45-678',
+      jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
+    },
+  ];
+
+  const selected = locations.find(loc => loc.id === selectedLocation);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Header Section */}
@@ -15,156 +47,101 @@ export default function KontakPage() {
         </div>
       </section>
 
-      {/* Main Content - 2 Column Layout */}
-      <section className="py-20 bg-white">
+      {/* Map Section with Location Overlays */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
-            {/* Left Column - Map */}
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-pink-900">Lokasi Cabang Kami</h2>
-              
-              {/* Map Container */}
-              <div className="bg-gradient-to-br from-pink-100 to-pink-50 rounded-2xl overflow-hidden shadow-lg h-96 flex items-center justify-center">
-                <img
-                  src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=400&fit=crop"
-                  alt="Lokasi Klinik DRW Estetika"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          <div className="max-w-5xl mx-auto">
+            {/* Map Container */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl h-96 bg-white">
+              <img
+                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1000&h=600&fit=crop"
+                alt="Lokasi Klinik DRW Estetika"
+                className="w-full h-full object-cover"
+              />
 
-              {/* Map Info */}
-              <div className="bg-pink-50 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-pink-900 mb-3">Jangkauan Kami</h3>
-                <p className="text-gray-700 text-sm">
-                  Klinik DRW Estetika memiliki 3 cabang strategis di Jawa Tengah untuk melayani Anda dengan lebih baik.
-                </p>
-              </div>
+              {/* Location Markers */}
+              {locations.map((location) => (
+                <button
+                  key={location.id}
+                  onClick={() => setSelectedLocation(location.id)}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group"
+                  style={location.position}
+                >
+                  {/* Marker Circle */}
+                  <div
+                    className={`relative flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ${
+                      selectedLocation === location.id
+                        ? 'bg-pink-600 scale-125 shadow-lg'
+                        : 'bg-white border-4 border-pink-400 hover:scale-110'
+                    }`}
+                  >
+                    <span className={`text-lg font-bold ${selectedLocation === location.id ? 'text-white' : 'text-pink-600'}`}>
+                      📍
+                    </span>
+                  </div>
+
+                  {/* Label Badge */}
+                  <div
+                    className={`absolute top-full mt-3 px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all duration-300 ${
+                      selectedLocation === location.id
+                        ? 'bg-pink-600 text-white shadow-lg'
+                        : 'bg-white text-pink-600 border-2 border-pink-200 group-hover:bg-pink-50'
+                    }`}
+                  >
+                    {location.name}
+                  </div>
+                </button>
+              ))}
             </div>
 
-            {/* Right Column - Location Details */}
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-pink-900">Informasi Cabang</h2>
+            {/* Location Details Below Map */}
+            {selected && (
+              <div className="mt-12 bg-white rounded-2xl p-8 shadow-lg border-2 border-pink-100">
+                <div className="grid md:grid-cols-3 gap-8">
+                  {/* Alamat */}
+                  <div>
+                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                      <span className="text-2xl">📍</span> Alamat
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      {selected.alamat}
+                    </p>
+                  </div>
 
-              {/* Magelang */}
-              <div className="bg-white border-2 border-pink-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-600 text-white font-bold">
-                      1
+                  {/* Telepon */}
+                  <div>
+                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                      <span className="text-2xl">📞</span> Telepon
+                    </h3>
+                    <a
+                      href={`tel:${selected.telepon.replace(/\s/g, '')}`}
+                      className="text-pink-600 hover:text-pink-700 font-semibold text-lg block mb-4"
+                    >
+                      {selected.telepon}
+                    </a>
+                    <Button asChild className="w-full">
+                      <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
+                        💬 Chat WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+
+                  {/* Jam Operasional */}
+                  <div>
+                    <h3 className="text-lg font-bold text-pink-900 mb-3 flex items-center gap-2">
+                      <span className="text-2xl">⏰</span> Jam Operasional
+                    </h3>
+                    <div className="text-gray-700 space-y-1">
+                      {selected.jam.split('\n').map((line, idx) => (
+                        <p key={idx} className="text-sm">
+                          {line}
+                        </p>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-pink-900">Magelang</h3>
-                    <p className="text-sm text-gray-600">Cabang Utama</p>
-                  </div>
                 </div>
-
-                <div className="space-y-3 text-sm text-gray-700 ml-14">
-                  <div>
-                    <p className="font-semibold text-gray-900">📍 Alamat</p>
-                    <p>Jl. Merdeka No. 123, Magelang, Jawa Tengah 56115</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">📞 Telepon</p>
-                    <a href="tel:+6274123456" className="text-pink-600 hover:text-pink-700 font-medium">
-                      +62 274-123-456
-                    </a>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">⏰ Jam Operasional</p>
-                    <p>Senin - Jumat: 08:00 - 17:00</p>
-                    <p>Sabtu: 08:00 - 15:00</p>
-                    <p>Minggu: Tutup</p>
-                  </div>
-                </div>
-
-                <Button asChild className="w-full mt-4 ml-14">
-                  <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
-                    💬 Chat WhatsApp
-                  </a>
-                </Button>
               </div>
-
-              {/* Purworejo */}
-              <div className="bg-white border-2 border-pink-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-600 text-white font-bold">
-                      2
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-pink-900">Purworejo</h3>
-                    <p className="text-sm text-gray-600">Cabang Cabang</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3 text-sm text-gray-700 ml-14">
-                  <div>
-                    <p className="font-semibold text-gray-900">📍 Alamat</p>
-                    <p>Jl. Ahmad Yani No. 456, Purworejo, Jawa Tengah 54111</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">📞 Telepon</p>
-                    <a href="tel:+6275234567" className="text-pink-600 hover:text-pink-700 font-medium">
-                      +62 752-34-567
-                    </a>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">⏰ Jam Operasional</p>
-                    <p>Senin - Jumat: 08:00 - 17:00</p>
-                    <p>Sabtu: 08:00 - 15:00</p>
-                    <p>Minggu: Tutup</p>
-                  </div>
-                </div>
-
-                <Button asChild className="w-full mt-4 ml-14">
-                  <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
-                    💬 Chat WhatsApp
-                  </a>
-                </Button>
-              </div>
-
-              {/* Kutoarjo */}
-              <div className="bg-white border-2 border-pink-200 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-600 text-white font-bold">
-                      3
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-pink-900">Kutoarjo</h3>
-                    <p className="text-sm text-gray-600">Cabang Cabang</p>
-                  </div>
-                </div>
-
-                <div className="space-y-3 text-sm text-gray-700 ml-14">
-                  <div>
-                    <p className="font-semibold text-gray-900">📍 Alamat</p>
-                    <p>Jl. Diponegoro No. 789, Kutoarjo, Jawa Tengah 54211</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">📞 Telepon</p>
-                    <a href="tel:+6275645678" className="text-pink-600 hover:text-pink-700 font-medium">
-                      +62 756-45-678
-                    </a>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">⏰ Jam Operasional</p>
-                    <p>Senin - Jumat: 08:00 - 17:00</p>
-                    <p>Sabtu: 08:00 - 15:00</p>
-                    <p>Minggu: Tutup</p>
-                  </div>
-                </div>
-
-                <Button asChild className="w-full mt-4 ml-14">
-                  <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer">
-                    💬 Chat WhatsApp
-                  </a>
-                </Button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
