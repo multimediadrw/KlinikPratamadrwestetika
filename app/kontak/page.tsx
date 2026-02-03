@@ -15,7 +15,7 @@ export default function KontakPage() {
       name: 'Magelang',
       alamat: 'Jl. Jend. Sudirman, Rejowinangun Sel., Kec. Magelang Sel., Kota Magelang, Jawa Tengah 59214',
       telepon: '+62 857-9964-3777',
-      teleponClean: '6285712859999',
+      teleponClean: '6285799643777',
       mapsUrl: 'https://maps.app.goo.gl/Y6LRRxuRz8SCDTuq7',
     },
     {
@@ -31,7 +31,7 @@ export default function KontakPage() {
       name: 'Kutoarjo',
       alamat: 'Jalan Mardi usodo timur alun-alun No.6, Kutoarjo, Kec. Kutoarjo, Kabupaten Purworejo, Jawa Tengah 54212',
       telepon: '+62 275 6451864',
-      teleponClean: '62275645186',
+      teleponClean: '6285360005684',
       mapsUrl: 'https://maps.app.goo.gl/QuCy6UBdZQw8KWFe9',
     },
   ];
@@ -43,12 +43,14 @@ export default function KontakPage() {
     setShowContactModal(true);
   };
 
-  const handleSelectLocation = (locationId: number) => {
-    const location = locations.find(loc => loc.id === locationId);
-    if (!location) return;
-
-    if (modalType === 'whatsapp') {
-      window.open(`https://wa.me/${location.teleponClean}`, '_blank');
+  const handleSelectLocation = (locationId: number, whatsappNumber?: string) => {
+    if (modalType === 'whatsapp' && whatsappNumber) {
+      window.open(`https://wa.me/${whatsappNumber}`, '_blank');
+    } else if (modalType === 'whatsapp') {
+      const location = locations.find(loc => loc.id === locationId);
+      if (location) {
+        window.open(`https://wa.me/${location.teleponClean}`, '_blank');
+      }
     } else {
       // For hubungi kami, just close modal and scroll to form
       setShowContactModal(false);
@@ -266,22 +268,48 @@ export default function KontakPage() {
       {/* Modal untuk Pilih Cabang */}
       {showContactModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl max-h-96 overflow-y-auto">
             <h3 className="text-2xl font-bold text-pink-900 mb-6">
               {modalType === 'whatsapp' ? 'Chat WhatsApp ke Cabang Mana?' : 'Hubungi Cabang Mana?'}
             </h3>
 
             <div className="space-y-3">
-              {locations.map((location) => (
+              {/* Magelang */}
+              <button
+                onClick={() => handleSelectLocation(1)}
+                className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg"
+              >
+                <div className="font-semibold text-pink-900">Magelang</div>
+                <div className="text-sm text-gray-600 mt-1">085799643777</div>
+              </button>
+
+              {/* Purworejo - 2 Admin */}
+              <div className="space-y-2">
+                <div className="font-semibold text-pink-900 text-sm px-2">Purworejo (2 Admin)</div>
                 <button
-                  key={location.id}
-                  onClick={() => handleSelectLocation(location.id)}
-                  className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg"
+                  onClick={() => handleSelectLocation(2, '6285712859999')}
+                  className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg ml-2"
                 >
-                  <div className="font-semibold text-pink-900">{location.name}</div>
-                  <div className="text-sm text-gray-600 mt-1">{location.telepon}</div>
+                  <div className="font-semibold text-pink-900">Admin 1</div>
+                  <div className="text-sm text-gray-600 mt-1">085712859999</div>
                 </button>
-              ))}
+                <button
+                  onClick={() => handleSelectLocation(2, '6282323606087')}
+                  className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg ml-2"
+                >
+                  <div className="font-semibold text-pink-900">Admin 2</div>
+                  <div className="text-sm text-gray-600 mt-1">082323606087</div>
+                </button>
+              </div>
+
+              {/* Kutoarjo */}
+              <button
+                onClick={() => handleSelectLocation(3)}
+                className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg"
+              >
+                <div className="font-semibold text-pink-900">Kutoarjo</div>
+                <div className="text-sm text-gray-600 mt-1">085360005684</div>
+              </button>
             </div>
 
             <button
