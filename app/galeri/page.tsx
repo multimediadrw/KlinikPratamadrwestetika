@@ -1,78 +1,102 @@
 import Image from 'next/image';
 
 export default function GaleriPage() {
-  const beforeAfterImages = [
+  const facilityImages = [
     {
       id: 1,
-      title: 'Facial Treatment Result',
-      description: 'Hasil perawatan facial yang memberikan kulit lebih cerah dan segar',
-      image: '/pasted_file_SQjfAM_image.png'
+      title: 'Ruang Konsultasi Modern',
+      description: 'Ruang konsultasi yang nyaman dan modern untuk diskusi dengan dokter',
+      image: '/DSC00303.JPG'
     },
     {
       id: 2,
-      title: 'HIFU Treatment Result',
-      description: 'Hasil lifting kulit yang terlihat lebih kencang dan muda',
-      image: '/pasted_file_fNcxfh_image.png'
+      title: 'Ruang Treatment Premium',
+      description: 'Ruang treatment yang dirancang untuk kenyamanan dan privasi pasien',
+      image: '/DSC00368.JPG'
     },
     {
       id: 3,
-      title: 'IPL Treatment Result',
-      description: 'Hasil penghilangan bintik hitam dan perataan warna kulit',
-      image: '/pasted_file_dKeFHo_image.png'
+      title: 'Peralatan Medis Terkini',
+      description: 'Menggunakan peralatan medis terbaru dan teknologi terdepan',
+      image: '/DSC00924.JPG'
     },
     {
       id: 4,
-      title: 'Filler Treatment Result',
-      description: 'Hasil penambahan volume dan pengisian kerutan',
-      image: '/pasted_file_EqD5T0_image.png'
+      title: 'Fasilitas Sterilisasi',
+      description: 'Standar kebersihan dan sterilisasi yang ketat',
+      image: '/DSC00980.JPG'
     },
     {
       id: 5,
-      title: 'Botox Treatment Result',
-      description: 'Hasil pengurangan garis halus dan kerutan di wajah',
-      image: '/pasted_file_qcYvPo_image.png'
+      title: 'Area Tunggu Pasien',
+      description: 'Area tunggu yang nyaman dengan desain modern',
+      image: '/DSC00981.JPG'
     },
     {
       id: 6,
-      title: 'Dermapen Treatment Result',
-      description: 'Hasil perbaikan tekstur kulit dan pengurangan bekas jerawat',
-      image: '/pasted_file_9zK78k_image.png'
+      title: 'Ruang Operasi',
+      description: 'Ruang operasi dengan standar internasional',
+      image: '/DSC00984.JPG'
     },
     {
       id: 7,
-      title: 'Chemical Peeling Result',
-      description: 'Hasil pengelupasan kulit untuk tekstur lebih halus',
-      image: '/pasted_file_GnBcXp_image.png'
+      title: 'Teknologi Laser',
+      description: 'Peralatan laser terbaru untuk treatment yang presisi',
+      image: '/DSC01022.JPG'
     },
     {
       id: 8,
-      title: 'Laser Treatment Result',
-      description: 'Hasil perawatan laser untuk kulit yang lebih mulus',
-      image: '/pasted_file_lmVBPP_image.png'
+      title: 'Ruang Recovery',
+      description: 'Ruang pemulihan yang nyaman setelah treatment',
+      image: '/DSC01715.JPG'
     },
     {
       id: 9,
-      title: 'PRP Treatment Result',
-      description: 'Hasil regenerasi kulit menggunakan plasma darah',
-      image: '/pasted_file_et7yhb_image.png'
+      title: 'Fasilitas Laboratorium',
+      description: 'Laboratorium lengkap untuk pemeriksaan medis',
+      image: '/DSC01721.JPG'
     },
     {
       id: 10,
-      title: 'Microneedling Result',
-      description: 'Hasil perawatan mikro jarum untuk kulit lebih muda',
-      image: '/pasted_file_hYY9Mx_image.png'
+      title: 'Ruang Perawatan Khusus',
+      description: 'Ruang perawatan dengan teknologi canggih',
+      image: '/DSC02863.JPG'
     },
     {
       id: 11,
-      title: 'Acne Treatment Result',
-      description: 'Hasil perawatan jerawat yang efektif dan aman',
-      image: '/pasted_file_mnZQTV_image.png'
+      title: 'Area Administrasi',
+      description: 'Area administrasi yang profesional dan terorganisir',
+      image: '/DSC02868.JPG'
     },
     {
       id: 12,
-      title: 'Whitening Treatment Result',
-      description: 'Hasil perawatan pemutihan kulit yang alami',
-      image: '/pasted_file_n6iIGo_image.png'
+      title: 'Fasilitas Parkir',
+      description: 'Parkir yang luas dan aman untuk kenyamanan pasien',
+      image: '/IMG_1124.JPG'
+    },
+    {
+      id: 13,
+      title: 'Lobby Klinik',
+      description: 'Lobby yang elegan dan menyambut pasien dengan baik',
+      image: '/IMG_1127.JPG'
+    },
+    {
+      id: 14,
+      title: 'Ruang Edukasi',
+      description: 'Ruang untuk edukasi dan konsultasi pasien',
+      image: '/IMG_1157.JPG'
+    },
+    {
+      id: 15,
+      title: 'Fasilitas Tambahan',
+      description: 'Fasilitas pendukung untuk kenyamanan maksimal',
+      image: '/MRY03299.JPG'
+    },
+    {
+      id: 16,
+      title: 'Ruang VIP',
+      description: 'Ruang VIP dengan privasi dan kenyamanan eksklusif',
+      image: '/MRY03321.JPG'
     },
   ];
 
@@ -82,21 +106,18 @@ export default function GaleriPage() {
       name: 'Siti Nurhaliza',
       rating: 5,
       text: 'Hasil treatment saya sangat memuaskan! Kulit terasa lebih cerah dan segar. Dokter dan staff sangat profesional dan ramah.',
-      image: '/pasted_file_r2PO27_image.png'
     },
     {
       id: 2,
       name: 'Rina Wijaya',
       rating: 5,
       text: 'Saya sudah mencoba beberapa treatment dan semuanya memberikan hasil yang bagus. Harga juga sangat kompetitif!',
-      image: '/pasted_file_qcYvPo_image.png'
     },
     {
       id: 3,
       name: 'Dewi Lestari',
       rating: 5,
       text: 'Klinik ini benar-benar terpercaya. Dokter menjelaskan setiap treatment dengan detail dan tidak ada biaya tersembunyi.',
-      image: '/pasted_file_SQjfAM_image.png'
     },
   ];
 
@@ -112,18 +133,18 @@ export default function GaleriPage() {
         </div>
       </section>
 
-      {/* Gallery Content */}
+      {/* Facilities Gallery */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-pink-900 text-center mb-4">Before & After</h2>
+          <h2 className="text-4xl font-bold text-pink-900 text-center mb-4">Fasilitas Klinik Kami</h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Hasil nyata dari pasien kami yang telah melakukan berbagai treatment di klinik kami
+            Fasilitas lengkap dengan standar internasional untuk kenyamanan dan keamanan pasien
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {beforeAfterImages.map((item) => (
-              <div key={item.id} className="bg-pink-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                <div className="relative h-64 bg-gray-200">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {facilityImages.map((item) => (
+              <div key={item.id} className="bg-pink-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="relative h-48 bg-gray-200">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -131,9 +152,9 @@ export default function GaleriPage() {
                     className="object-cover"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-pink-900 mb-2">{item.title}</h3>
-                  <p className="text-gray-700">{item.description}</p>
+                <div className="p-4">
+                  <h3 className="text-lg font-bold text-pink-900 mb-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -149,66 +170,37 @@ export default function GaleriPage() {
             {testimonials.map((testimonial) => (
               <div key={testimonial.id} className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="relative w-16 h-16 mr-4 rounded-full overflow-hidden">
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-pink-900">{testimonial.name}</p>
-                    <div className="flex text-yellow-400">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <span key={i}>⭐</span>
-                      ))}
-                    </div>
+                  <div className="flex text-yellow-400">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i}>⭐</span>
+                    ))}
                   </div>
                 </div>
-                <p className="text-gray-700 italic">"{testimonial.text}"</p>
+                <p className="text-gray-700 italic mb-4">"{testimonial.text}"</p>
+                <p className="font-semibold text-pink-900">— {testimonial.name}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Facilities Section */}
+      {/* Why Choose Us */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-pink-900 text-center mb-12">Fasilitas Kami</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-pink-100">
-              <div className="h-48 bg-gradient-to-br from-pink-200 to-pink-300 rounded-lg flex items-center justify-center mb-6">
-                <span className="text-6xl">🏥</span>
+          <h2 className="text-4xl font-bold text-pink-900 text-center mb-12">Mengapa Memilih Kami?</h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { icon: '👨‍⚕️', title: 'Dokter Profesional', desc: 'Spesialis estetika medis berpengalaman' },
+              { icon: '🔬', title: 'Teknologi Terkini', desc: 'Peralatan medis terbaru dan teruji' },
+              { icon: '✅', title: 'Aman & Terpercaya', desc: 'Standar medis internasional' },
+              { icon: '💝', title: 'Harga Terjangkau', desc: 'Kualitas premium dengan harga kompetitif' }
+            ].map((item, i) => (
+              <div key={i} className="bg-pink-50 rounded-xl p-6 text-center shadow-lg">
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-bold text-pink-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.desc}</p>
               </div>
-              <h3 className="text-2xl font-bold text-pink-900 mb-3">Ruang Konsultasi Modern</h3>
-              <p className="text-gray-700">Ruang konsultasi yang nyaman dan modern untuk diskusi dengan dokter</p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-pink-100">
-              <div className="h-48 bg-gradient-to-br from-pink-200 to-pink-300 rounded-lg flex items-center justify-center mb-6">
-                <span className="text-6xl">🛏️</span>
-              </div>
-              <h3 className="text-2xl font-bold text-pink-900 mb-3">Ruang Treatment Nyaman</h3>
-              <p className="text-gray-700">Ruang treatment yang dirancang untuk kenyamanan dan privasi pasien</p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-pink-100">
-              <div className="h-48 bg-gradient-to-br from-pink-200 to-pink-300 rounded-lg flex items-center justify-center mb-6">
-                <span className="text-6xl">🔬</span>
-              </div>
-              <h3 className="text-2xl font-bold text-pink-900 mb-3">Peralatan Medis Terkini</h3>
-              <p className="text-gray-700">Menggunakan peralatan medis terbaru dan teknologi terdepan</p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-pink-100">
-              <div className="h-48 bg-gradient-to-br from-pink-200 to-pink-300 rounded-lg flex items-center justify-center mb-6">
-                <span className="text-6xl">🧼</span>
-              </div>
-              <h3 className="text-2xl font-bold text-pink-900 mb-3">Standar Kebersihan Tinggi</h3>
-              <p className="text-gray-700">Menjaga standar kebersihan dan sterilisasi yang ketat</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
