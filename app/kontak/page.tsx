@@ -14,7 +14,7 @@ export default function KontakPage() {
       alamat: 'Jl. Merdeka No. 123, Magelang, Jawa Tengah 56115',
       telepon: '+62 274-123-456',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
-      mapsUrl: 'https://www.google.com/maps/search/Jl.+Merdeka+No.+123+Magelang+Jawa+Tengah',
+      mapsUrl: 'https://maps.app.goo.gl/Y6LRRxuRz8SCDTuq7',
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ export default function KontakPage() {
       alamat: 'Jl. Ahmad Yani No. 456, Purworejo, Jawa Tengah 54111',
       telepon: '+62 752-34-567',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
-      mapsUrl: 'https://www.google.com/maps/search/Jl.+Ahmad+Yani+No.+456+Purworejo+Jawa+Tengah',
+      mapsUrl: 'https://maps.app.goo.gl/TGAZe47Lgt25MKub6',
     },
     {
       id: 3,
@@ -30,7 +30,7 @@ export default function KontakPage() {
       alamat: 'Jl. Diponegoro No. 789, Kutoarjo, Jawa Tengah 54211',
       telepon: '+62 756-45-678',
       jam: 'Senin - Jumat: 08:00 - 17:00\nSabtu: 08:00 - 15:00\nMinggu: Tutup',
-      mapsUrl: 'https://www.google.com/maps/search/Jl.+Diponegoro+No.+789+Kutoarjo+Jawa+Tengah',
+      mapsUrl: 'https://maps.app.goo.gl/QuCy6UBdZQw8KWFe9',
     },
   ];
 
