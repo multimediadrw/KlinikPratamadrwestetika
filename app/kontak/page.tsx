@@ -52,11 +52,8 @@ export default function KontakPage() {
         window.open(`https://wa.me/${location.teleponClean}`, '_blank');
       }
     } else {
-      // For hubungi kami, just close modal and scroll to form
+      // For hubungi kami, just close modal
       setShowContactModal(false);
-      setTimeout(() => {
-        document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
     }
   };
 
@@ -72,50 +69,9 @@ export default function KontakPage() {
         </div>
       </section>
 
-      {/* Contact Info Section - 3 Cabang */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {locations.map((location) => (
-              <div
-                key={location.id}
-                className="bg-gradient-to-br from-pink-600 to-pink-500 text-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <h3 className="text-2xl font-bold mb-6">{location.name}</h3>
-
-                <div className="space-y-4">
-                  {/* Alamat */}
-                  <div className="flex gap-3">
-                    <span className="text-2xl">📍</span>
-                    <div>
-                      <p className="text-sm opacity-90">Alamat</p>
-                      <p className="text-sm font-semibold">{location.alamat}</p>
-                    </div>
-                  </div>
-
-                  {/* Telepon */}
-                  <div className="flex gap-3">
-                    <span className="text-2xl">📞</span>
-                    <div>
-                      <p className="text-sm opacity-90">Telepon</p>
-                      <a
-                        href={`tel:${location.telepon.replace(/\s/g, '')}`}
-                        className="text-sm font-semibold hover:underline"
-                      >
-                        {location.telepon}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Location Selector & Map Section */}
-      <section className="py-20 bg-pink-50">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-pink-50 min-h-screen flex items-center">
+        <div className="container mx-auto px-4 w-full">
           <div className="max-w-4xl mx-auto">
             {/* Location Tabs */}
             <div className="flex justify-center gap-4 mb-12">
@@ -151,116 +107,53 @@ export default function KontakPage() {
                   </button>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex justify-center gap-4">
-                  <Button
-                    onClick={() => handleContactClick('hubungi')}
-                    className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 text-lg"
-                  >
-                    📧 Hubungi Kami
-                  </Button>
-                  <Button
-                    onClick={() => handleContactClick('whatsapp')}
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg"
-                  >
-                    💬 WhatsApp
-                  </Button>
+                {/* Location Details */}
+                <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-pink-200 max-w-2xl mx-auto">
+                  <h3 className="text-3xl font-bold text-pink-900 mb-6">{selected.name}</h3>
+
+                  <div className="space-y-4 mb-8">
+                    {/* Alamat */}
+                    <div className="flex gap-4">
+                      <span className="text-3xl">📍</span>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-600 uppercase">Alamat</p>
+                        <p className="text-lg text-gray-800">{selected.alamat}</p>
+                      </div>
+                    </div>
+
+                    {/* Telepon */}
+                    <div className="flex gap-4">
+                      <span className="text-3xl">📞</span>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-600 uppercase">Telepon</p>
+                        <a
+                          href={`tel:${selected.telepon.replace(/\s/g, '')}`}
+                          className="text-lg text-pink-600 font-semibold hover:underline"
+                        >
+                          {selected.telepon}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex justify-center gap-4 pt-6 border-t-2 border-pink-200">
+                    <Button
+                      onClick={() => handleContactClick('hubungi')}
+                      className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 text-base"
+                    >
+                      📧 Hubungi Kami
+                    </Button>
+                    <Button
+                      onClick={() => handleContactClick('whatsapp')}
+                      className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base"
+                    >
+                      💬 WhatsApp
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form Section */}
-      <section id="contact-form" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-pink-900 mb-12">
-            Hubungi Kami Melalui Formulir
-          </h2>
-
-          <div className="max-w-2xl mx-auto bg-pink-50 rounded-2xl p-8 shadow-lg border-2 border-pink-200">
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="w-full px-4 py-3 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent outline-none"
-                  placeholder="Masukkan nama Anda"
-                  required
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full px-4 py-3 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent outline-none"
-                    placeholder="email@example.com"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-gray-900 mb-2">
-                    Nomor Telepon
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    className="w-full px-4 py-3 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent outline-none"
-                    placeholder="+62 xxx-xxxx-xxxx"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-semibold text-gray-900 mb-2">
-                  Subjek
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  className="w-full px-4 py-3 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent outline-none"
-                  placeholder="Topik pertanyaan Anda"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-gray-900 mb-2">
-                  Pesan
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  className="w-full px-4 py-3 border-2 border-pink-200 rounded-lg focus:ring-2 focus:ring-pink-600 focus:border-transparent outline-none resize-none"
-                  placeholder="Tulis pesan Anda di sini..."
-                  required
-                />
-              </div>
-
-              <Button type="submit" className="w-full py-3 text-base font-semibold">
-                Kirim Pesan
-              </Button>
-            </form>
-
-            <p className="text-center text-sm text-gray-600 mt-6">
-              Kami akan merespon pesan Anda dalam waktu 24 jam
-            </p>
           </div>
         </div>
       </section>
