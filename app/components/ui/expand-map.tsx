@@ -49,17 +49,18 @@ export function LocationMap({
   }
 
   return (
-    <motion.div
-      ref={containerRef}
-      className={`relative cursor-pointer select-none ${className}`}
-      style={{
-        perspective: 1000,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
+    <div className="flex justify-center items-center">
+      <motion.div
+        ref={containerRef}
+        className={`relative cursor-pointer select-none ${className}`}
+        style={{
+          perspective: 1000,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleClick}
+      >
       <motion.div
         className="relative overflow-hidden rounded-2xl bg-white border-2 border-pink-200"
         style={{
@@ -357,6 +358,36 @@ export function LocationMap({
       >
         Klik untuk expand
       </motion.p>
-    </motion.div>
+      </motion.div>
+
+      {/* Cursor tracking lines */}
+      {isHovered && (
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{ zIndex: -1 }}
+        >
+          <defs>
+            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{ stopColor: '#ec4899', stopOpacity: 0 }} />
+              <stop offset="50%" style={{ stopColor: '#ec4899', stopOpacity: 0.8 }} />
+              <stop offset="100%" style={{ stopColor: '#ec4899', stopOpacity: 0 }} />
+            </linearGradient>
+          </defs>
+          <motion.line
+            x1="50%"
+            y1="0"
+            x2={`${50 + mouseX.get() / 10}`}
+            y2={`${50 + mouseY.get() / 10}`}
+            stroke="url(#lineGradient)"
+            strokeWidth="2"
+            opacity="0.6"
+            animate={{
+              x2: `${50 + mouseX.get() / 10}`,
+              y2: `${50 + mouseY.get() / 10}`,
+            }}
+          />
+        </svg>
+      )}
+    </div>
   )
 }
