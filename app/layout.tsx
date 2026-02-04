@@ -101,8 +101,8 @@ export default function RootLayout({
               image: 'https://drwskincare.com/logo.png',
               description: 'Klinik kecantikan profesional dengan teknologi terkini',
               url: 'https://drwskincare.com',
-              telephone: '+6285799643777',
-              email: 'info@drwestetika.com',
+              telephone: '',
+              email: '',
               address: [
                 {
                   '@type': 'PostalAddress',
@@ -147,7 +147,7 @@ export default function RootLayout({
               name: 'Klinik Pratama DRW Estetika',
               image: 'https://drwskincare.com/logo.png',
               url: 'https://drwskincare.com',
-              telephone: '+6285799643777',
+              telephone: '',
               priceRange: '$$',
               areaServed: ['Magelang', 'Purworejo', 'Kutoarjo'],
               aggregateRating: {
@@ -201,9 +201,7 @@ export default function RootLayout({
               <div>
                 <h4 className="text-lg font-semibold mb-4">Kontak</h4>
                 <ul className="space-y-2 text-pink-200">
-                  <li>📍 Magelang, Jawa Tengah</li>
-                  <li>📞 +62 857-9964-3777</li>
-                  <li>✉️ info@drwestetika.com</li>
+                  {/* Contact information removed */}
                 </ul>
               </div>
             </div>

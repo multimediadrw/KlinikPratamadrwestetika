@@ -13,9 +13,9 @@ export default function KontakPage() {
     {
       id: 1,
       name: 'Magelang',
-      alamat: 'Jl. Jend. Sudirman, Rejowinangun Sel., Kec. Magelang Sel., Kota Magelang, Jawa Tengah 59214',
-      telepon: '+62 857-9964-3777',
-      teleponClean: '6285799643777',
+      alamat: '',
+      telepon: '',
+      teleponClean: '',
       mapsUrl: 'https://maps.app.goo.gl/Y6LRRxuRz8SCDTuq7',
     },
     {
@@ -167,13 +167,13 @@ export default function KontakPage() {
             </h3>
 
             <div className="space-y-3">
-              {/* Magelang */}
+              {/* Magelang - Contact info removed */}
               <button
                 onClick={() => handleSelectLocation(1)}
                 className="w-full bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-lg p-4 text-left transition-all hover:shadow-lg"
               >
                 <div className="font-semibold text-pink-900">Magelang</div>
-                <div className="text-sm text-gray-600 mt-1">085799643777</div>
+                <div className="text-sm text-gray-600 mt-1">-</div>
               </button>
 
               {/* Purworejo - 2 Admin */}
