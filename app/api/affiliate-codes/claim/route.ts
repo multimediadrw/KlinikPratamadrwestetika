@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     });
 
     const pendingCommission = reservationsWithCode.reduce(
-      (sum: number, res) => sum + Number(res.commissionAmount),
+      (sum: number, res: any) => sum + Number(res.commissionAmount),
       0
     );
 
