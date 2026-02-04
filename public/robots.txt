@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /.next
+Disallow: /api
+
+Sitemap: https://drwskincare.com/sitemap.xml
+
+# Google-specific rules
+User-agent: Googlebot
+Allow: /
+
+# Bing-specific rules
+User-agent: Bingbot
+Allow: /
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
