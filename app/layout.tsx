@@ -63,7 +63,7 @@ export default function RootLayout({
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+          src={`https://www.googletagmanager.com/gtag/js?id=G-EE3FH8DGVT`}
         />
         <Script
           id="google-analytics"
@@ -73,7 +73,7 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX', {
+              gtag('config', 'G-EE3FH8DGVT', {
                 page_path: window.location.pathname,
               });
             `,
@@ -81,7 +81,7 @@ export default function RootLayout({
         />
 
         {/* Google Search Console Verification */}
-        <meta name="google-site-verification" content="XXXXXXXXXX" />
+        <meta name="google-site-verification" content="google845dd4e7fdd87b84" />
 
         {/* Additional SEO Meta Tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
