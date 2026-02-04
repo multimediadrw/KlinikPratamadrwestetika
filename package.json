@@ -12,7 +12,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "grant-fo": "ts-node --compiler-options {\"module\":\"commonjs\"} scripts/grant-front-office.ts"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} prisma/seed.ts"
