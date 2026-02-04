@@ -62,6 +62,10 @@ export async function POST(req: Request) {
       // Generate affiliate code
       const affiliateCode = generateAffiliateCode(first_name || 'User', last_name || undefined);
 
+      // Check if this is the first user (auto-admin)
+      const userCount = await prisma.user.count();
+      const isFirstUser = userCount === 0;
+
       // Create user in database
       await prisma.user.create({
         data: {
@@ -70,7 +74,7 @@ export async function POST(req: Request) {
           firstName: first_name || undefined,
           lastName: last_name || undefined,
           affiliateCode,
-          isAdmin: false,
+          isAdmin: isFirstUser, // First user is auto-admin
           isTeamLeader: false,
         },
       });
