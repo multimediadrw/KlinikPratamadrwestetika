@@ -60,15 +60,15 @@ export async function POST(req: Request) {
       }
 
       // Generate affiliate code
-      const affiliateCode = generateAffiliateCode(first_name || 'User', last_name);
+      const affiliateCode = generateAffiliateCode(first_name || 'User', last_name || undefined);
 
       // Create user in database
       await prisma.user.create({
         data: {
-          clerkUserId: id,
+          clerkUserId: id as string,
           email,
-          firstName: first_name || null,
-          lastName: last_name || null,
+          firstName: first_name || undefined,
+          lastName: last_name || undefined,
           affiliateCode,
           isAdmin: false,
           isTeamLeader: false,
@@ -96,8 +96,8 @@ export async function POST(req: Request) {
         where: { clerkUserId: id },
         data: {
           email,
-          firstName: first_name || null,
-          lastName: last_name || null,
+          firstName: first_name || undefined,
+          lastName: last_name || undefined,
         },
       });
 

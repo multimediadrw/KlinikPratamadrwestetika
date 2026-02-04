@@ -141,6 +141,7 @@ model Reservation {
   updatedAt       DateTime  @updatedAt
   
   // Relations
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   treatment       Treatment @relation(fields: [treatmentId], references: [id], onDelete: Restrict)
   referrer        User?     @relation("ReferredBy", fields: [referrerId], references: [id], onDelete: SetNull)
   preClaimCode    PreClaimAffiliateCode? @relation("AffiliateCode", fields: [preClaimCodeId], references: [id], onDelete: SetNull)
