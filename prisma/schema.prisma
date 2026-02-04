@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// USER MODELS
+// ============================================================================
+
+model User {
+  id                String         @id @default(cuid())
+  clerkUserId       String         @unique
+  email             String         @unique
+  firstName         String?
+  lastName          String?
+  affiliateCode     String         @unique // Kode affiliate unik
+  isTeamLeader      Boolean        @default(false)
+  isAdmin           Boolean        @default(false)
+  totalReferrals    Int            @default(0)
+  totalEarnings     Decimal        @default(0) @db.Decimal(10, 2)
+  commissionPending Decimal        @default(0) @db.Decimal(10, 2)
+  commissionPaid    Decimal        @default(0) @db.Decimal(10, 2)
+  
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  
+  // Relations
+  reservations      Reservation[]
+  referrals         Reservation[]  @relation("ReferredBy")
+  claimedCodes      PreClaimAffiliateCode[] @relation("ClaimedBy")
+}
+
+// ============================================================================
+// AFFILIATE CODE MODELS
+// ============================================================================
+
+model PreClaimAffiliateCode {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  claimedBy       String?   // User ID yang claim kode ini
+  claimedAt       DateTime?
+  usageCount      Int       @default(0)
+  totalCommission Decimal   @default(0) @db.Decimal(10, 2)
+  status          String    @default("unclaimed") // unclaimed, claimed
+  notes           String?   // Catatan admin
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  createdBy       String?   // Admin user ID yang buat kode
+  
+  // Relations
+  user            User?     @relation("ClaimedBy", fields: [claimedBy], references: [id])
+  reservations    Reservation[] @relation("AffiliateCode")
+}
+
+// ============================================================================
+// TREATMENT & CATEGORY MODELS
+// ============================================================================
+
+model TreatmentCategory {
+  id              String            @id @default(cuid())
+  name            String            @unique
+  slug            String            @unique
+  description     String?
+  image           String?
+  order           Int               @default(0)
+  active          Boolean           @default(true)
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  // Relations
+  treatments      Treatment[]
+}
+
+model Treatment {
+  id              String            @id @default(cuid())
+  categoryId      String
+  name            String
+  slug            String            @unique
+  description     String?
+  price           Decimal           @db.Decimal(10, 2)
+  duration        Int?              // dalam menit
+  image           String?
+  benefits        String[]
+  active          Boolean           @default(true)
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  // Relations
+  category        TreatmentCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  reservations    Reservation[]
+}
+
+// ============================================================================
+// RESERVATION MODEL
+// ============================================================================
+
+model Reservation {
+  id              String    @id @default(cuid())
+  userId          String?   // Bisa null jika customer tidak login
+  treatmentId     String
+  referredBy      String?   // Kode affiliate (string) - bisa unclaimed
+  referrerId      String?   // User ID yang punya kode
+  preClaimCodeId  String?   // Link ke PreClaimAffiliateCode jika unclaimed
+  
+  // Patient info
+  patientName     String
+  patientEmail    String
+  patientPhone    String
+  patientNotes    String?
+  
+  // Reservation details
+  reservationDate DateTime
+  reservationTime String
+  status          String    @default("pending") // pending, confirmed, completed, cancelled
+  
+  // Pricing
+  originalPrice   Decimal   @db.Decimal(10, 2)
+  finalPrice      Decimal   @db.Decimal(10, 2)
+  discount        Decimal   @default(0) @db.Decimal(10, 2)
+  
+  // Affiliate commission
+  commissionAmount Decimal  @default(0) @db.Decimal(10, 2)
+  commissionRate   Decimal  @default(10) @db.Decimal(5, 2) // Default 10%
+  commissionPaid   Boolean  @default(false)
+  
+  // Admin notes
+  adminNotes      String?
+  completedAt     DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  treatment       Treatment @relation(fields: [treatmentId], references: [id], onDelete: Restrict)
+  referrer        User?     @relation("ReferredBy", fields: [referrerId], references: [id], onDelete: SetNull)
+  preClaimCode    PreClaimAffiliateCode? @relation("AffiliateCode", fields: [preClaimCodeId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([treatmentId])
+  @@index([referrerId])
+  @@index([preClaimCodeId])
+  @@index([status])
+  @@index([reservationDate])
+}
+
+// ============================================================================
+// AUDIT LOG MODEL (Optional - untuk tracking)
+// ============================================================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // create, update, delete
+  entity    String   // Reservation, PreClaimAffiliateCode, etc
+  entityId  String
+  userId    String?  // Admin yang melakukan action
+  changes   String?  // JSON string of changes
+  
+  createdAt DateTime @default(now())
+  
+  @@index([entityId])
+  @@index([userId])
+  @@index([createdAt])
+}
