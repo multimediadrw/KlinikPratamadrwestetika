@@ -69,7 +69,7 @@ postgresql://berkomunitas:berkomunitas688@213.190.4.159/klinikdrw
 
 **Value:**
 ```
-https://drwskincare.com
+https://klinik.drwskincare.com
 ```
 
 **Environment:** Production, Preview, Development

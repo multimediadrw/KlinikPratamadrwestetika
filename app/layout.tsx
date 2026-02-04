@@ -18,13 +18,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://drwskincare.com',
+    url: 'https://klinik.drwskincare.com',
     siteName: 'Klinik Pratama DRW Estetika',
     title: 'Klinik Pratama DRW Estetika | Klinik Kecantikan & Estetika Medis',
     description: 'Klinik kecantikan profesional dengan teknologi terkini. Layanan treatment estetika medis terbaik di Jawa Tengah.',
     images: [
       {
-        url: 'https://drwskincare.com/og-image.jpg',
+        url: 'https://klinik.drwskincare.com/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Klinik Pratama DRW Estetika',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Klinik Pratama DRW Estetika',
     description: 'Klinik kecantikan profesional dengan teknologi terkini',
-    images: ['https://drwskincare.com/og-image.jpg'],
+    images: ['https://klinik.drwskincare.com/og-image.jpg'],
   },
   robots: {
     index: true,
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://drwskincare.com',
+    canonical: 'https://klinik.drwskincare.com',
   },
 };
 
@@ -99,9 +99,9 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'MedicalBusiness',
               name: 'Klinik Pratama DRW Estetika',
-              image: 'https://drwskincare.com/logo.png',
+              image: 'https://klinik.drwskincare.com/logo.png',
               description: 'Klinik kecantikan profesional dengan teknologi terkini',
-              url: 'https://drwskincare.com',
+              url: 'https://klinik.drwskincare.com',
               telephone: '',
               email: '',
               address: [
@@ -146,8 +146,8 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'LocalBusiness',
               name: 'Klinik Pratama DRW Estetika',
-              image: 'https://drwskincare.com/logo.png',
-              url: 'https://drwskincare.com',
+              image: 'https://klinik.drwskincare.com/logo.png',
+              url: 'https://klinik.drwskincare.com',
               telephone: '',
               priceRange: '$$',
               areaServed: ['Magelang', 'Purworejo', 'Kutoarjo'],

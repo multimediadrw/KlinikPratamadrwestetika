@@ -17,11 +17,11 @@
 
 ### 3. **XML Sitemap**
 - ✅ `sitemap.xml` - Semua halaman penting sudah listed
-- Location: `https://drwskincare.com/sitemap.xml`
+- Location: `https://klinik.drwskincare.com/sitemap.xml`
 
 ### 4. **Robots.txt**
 - ✅ `robots.txt` - Untuk mengatur crawling bots
-- Location: `https://drwskincare.com/robots.txt`
+- Location: `https://klinik.drwskincare.com/robots.txt`
 
 ---
 
@@ -42,11 +42,11 @@
 
 1. **Buka Google Search Console** → https://search.google.com/search-console
 2. **Add Property** → Pilih "URL prefix"
-3. **Masukkan:** `https://drwskincare.com`
+3. **Masukkan:** `https://klinik.drwskincare.com`
 4. **Verify dengan DNS record** atau HTML file
 5. **Submit sitemap:**
    - Klik "Sitemaps" di sidebar
-   - Masukkan: `https://drwskincare.com/sitemap.xml`
+   - Masukkan: `https://klinik.drwskincare.com/sitemap.xml`
    - Klik "Submit"
 
 ### Step 3: Verify Google Search Console (Choose One)
