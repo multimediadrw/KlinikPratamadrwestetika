@@ -44,6 +44,7 @@ model User {
 model PreClaimAffiliateCode {
   id              String    @id @default(cuid())
   code            String    @unique
+  assignedEmail   String?   // Email yang di-assign ke kode ini
   claimedBy       String?   // User ID yang claim kode ini
   claimedAt       DateTime?
   usageCount      Int       @default(0)
