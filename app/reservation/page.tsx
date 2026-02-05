@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ interface Treatment {
   category: string;
 }
 
-export default function ReservationPage() {
+function ReservationContent() {
   const searchParams = useSearchParams();
   const refCode = searchParams.get('ref');
   
@@ -270,5 +270,13 @@ export default function ReservationPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ReservationPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-black text-white">Loading...</div>}>
+      <ReservationContent />
+    </Suspense>
   );
 }
