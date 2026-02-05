@@ -279,10 +279,10 @@ export default function AffiliateCodesPage() {
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-gray-900 border border-yellow-800/30 rounded-lg p-8 max-w-md w-full mx-4">
             <h3 className="text-2xl font-bold text-yellow-500 mb-4">Generate New Code</h3>
-            <p className="text-gray-400 mb-6">Enter a custom affiliate code (e.g., DRWPRIME21)</p>
+            <p className="text-gray-400 mb-6">Enter a custom affiliate code</p>
             <input
               type="text"
-              placeholder="Enter code (e.g., DRWPRIME21)"
+              placeholder="Enter code"
               value={customCode}
               onChange={(e) => setCustomCode(e.target.value.toUpperCase())}
               className="w-full bg-yellow-900/20 border border-yellow-800/30 text-white rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-yellow-600 font-mono text-lg"

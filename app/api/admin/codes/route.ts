@@ -114,8 +114,10 @@ export async function POST(req: Request) {
       const newCode = await prisma.preClaimAffiliateCode.create({
         data: {
           code: codeToUse,
-          notes,
+          notes: notes || null,
           status: 'unclaimed',
+          usageCount: 0,
+          totalCommission: 0,
         },
       });
 
