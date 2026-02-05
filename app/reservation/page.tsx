@@ -34,7 +34,7 @@ function ReservationContent() {
 
   const fetchTreatments = async () => {
     try {
-      const response = await fetch('/api/treatments');
+      const response = await fetch('/api/treatments/list');
       if (response.ok) {
         const data = await response.json();
         setTreatments(data);
