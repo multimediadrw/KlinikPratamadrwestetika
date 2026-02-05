@@ -3,11 +3,19 @@
 import { useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useIsMobile } from '@/lib/useIsMobile';
-import MobileAppLayout from '@/components/MobileAppLayout';
-import MobileHome from '@/components/MobileHome';
 
-function DesktopHome() {
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const refCode = searchParams.get('ref');
+
+  useEffect(() => {
+    if (refCode) {
+      // Redirect ke form reservasi dengan ref code
+      router.push(`/reservation?ref=${refCode}`);
+    }
+  }, [refCode, router]);
+
   return (
     <main className="bg-white">
       {/* Hero Section with Background Image */}
@@ -95,7 +103,7 @@ function DesktopHome() {
             Hubungi kami sekarang untuk konsultasi gratis
           </p>
           <a 
-            href="https://wa.me/6285712859999"
+            href="https://wa.me/62274123456"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-white text-pink-600 px-8 py-4 rounded-full font-semibold hover:bg-pink-50 transition-colors shadow-lg"
@@ -106,32 +114,6 @@ function DesktopHome() {
       </section>
     </main>
   );
-}
-
-function HomeContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const refCode = searchParams.get('ref');
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (refCode) {
-      // Redirect ke form reservasi dengan ref code
-      router.push(`/reservation?ref=${refCode}`);
-    }
-  }, [refCode, router]);
-
-  // Show mobile app layout for mobile devices
-  if (isMobile) {
-    return (
-      <MobileAppLayout>
-        <MobileHome />
-      </MobileAppLayout>
-    );
-  }
-
-  // Show desktop layout for larger screens
-  return <DesktopHome />;
 }
 
 export default function Home() {
