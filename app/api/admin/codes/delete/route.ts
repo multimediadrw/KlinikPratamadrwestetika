@@ -56,8 +56,15 @@ export async function POST(request: NextRequest) {
     await prisma.auditLog.create({
       data: {
         action: 'DELETE_CODE',
-        performedBy: session.email,
-        details: `Code ${code.code} deleted`,
+        entity: 'PreClaimAffiliateCode',
+        entityId: code.id,
+        userId: session.email, // Admin email who performed the action
+        changes: JSON.stringify({
+          code: code.code,
+          assignedEmail: code.assignedEmail,
+          status: code.status,
+          action: 'deleted',
+        }),
       },
     });
 
