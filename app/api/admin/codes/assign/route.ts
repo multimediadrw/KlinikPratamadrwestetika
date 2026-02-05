@@ -90,9 +90,15 @@ export async function POST(request: NextRequest) {
     await prisma.auditLog.create({
       data: {
         action: code.status === 'claimed' ? 'TRANSFER_CODE' : 'ASSIGN_CLAIM_CODE',
-        performedBy: session.email,
-        targetEmail: email,
-        details: `Code ${code.code} ${code.status === 'claimed' ? 'transferred to' : 'assigned and claimed by'} ${email}`,
+        entity: 'PreClaimAffiliateCode',
+        entityId: code.id,
+        userId: session.email, // Admin email who performed the action
+        changes: JSON.stringify({
+          code: code.code,
+          from: code.assignedEmail || 'unclaimed',
+          to: email,
+          status: 'claimed',
+        }),
       },
     });
 
