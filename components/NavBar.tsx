@@ -45,7 +45,7 @@ export default function NavBar() {
             <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium">Beranda</Link>
             <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium">Galeri</Link>
             <Link href="/testimoni" className="text-gray-700 hover:text-pink-600 font-medium">Testimoni</Link>
-            <Link href="/harga" className="text-gray-700 hover:text-pink-600 font-medium">Harga</Link>
+            <Link href="/treatment" className="text-gray-700 hover:text-pink-600 font-medium">Treatment</Link>
             <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium">FAQ</Link>
             {!loading && isLoggedIn && (
               <Link href="/my-prime" className="text-yellow-600 hover:text-yellow-700 font-bold">MY PRIME</Link>

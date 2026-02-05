@@ -4,35 +4,35 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 interface Treatment {
-  nama: string;
-  layanan: string[];
-  harga: string;
-  manfaat: string;
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  duration: number;
+  slug: string;
 }
 
-interface MenuData {
-  klinik: string;
-  kontak: string;
-  sumber: string;
-  menu_lengkap: {
-    [key: string]: Treatment[];
-  };
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+  treatments: Treatment[];
 }
 
-export default function HargaPage() {
-  const [menuData, setMenuData] = useState<MenuData | null>(null);
+export default function TreatmentPage() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMenu = async () => {
+    const fetchTreatments = async () => {
       try {
-        const response = await fetch('/menu.json');
+        const response = await fetch('/api/treatments');
         if (!response.ok) {
-          throw new Error('Failed to load menu data');
+          throw new Error('Failed to load treatment data');
         }
         const data = await response.json();
-        setMenuData(data);
+        setCategories(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
@@ -40,31 +40,40 @@ export default function HargaPage() {
       }
     };
 
-    fetchMenu();
+    fetchTreatments();
   }, []);
+
+  const formatPrice = (price: string) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+    }).format(parseInt(price));
+  };
 
   if (loading) {
     return (
-      <main className="bg-white">
+      <main className="bg-white min-h-screen pt-20">
         <section className="bg-gradient-to-r from-pink-600 to-pink-500 text-white py-20">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-4">Daftar Harga & Paket</h1>
+            <h1 className="text-5xl font-bold mb-4">Daftar Treatment & Paket</h1>
             <p className="text-xl">Loading data...</p>
           </div>
         </section>
         <div className="py-20 text-center">
-          <p className="text-gray-600">Memuat data treatment...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
+          <p className="mt-4 text-gray-600">Memuat data treatment...</p>
         </div>
       </main>
     );
   }
 
-  if (error || !menuData) {
+  if (error || !categories.length) {
     return (
-      <main className="bg-white">
+      <main className="bg-white min-h-screen pt-20">
         <section className="bg-gradient-to-r from-pink-600 to-pink-500 text-white py-20">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-4">Daftar Harga & Paket</h1>
+            <h1 className="text-5xl font-bold mb-4">Daftar Treatment & Paket</h1>
           </div>
         </section>
         <div className="py-20 text-center max-w-4xl mx-auto px-4">
@@ -75,12 +84,12 @@ export default function HargaPage() {
   }
 
   return (
-    <main>
+    <main className="min-h-screen pt-20">
       <section className="bg-gradient-to-r from-pink-600 to-pink-500 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">Daftar Harga & Paket</h1>
-          <p className="text-xl">{menuData.klinik}</p>
-          <p className="text-pink-100 mt-2">Hubungi: {menuData.kontak}</p>
+          <h1 className="text-5xl font-bold mb-4">Daftar Treatment & Paket</h1>
+          <p className="text-xl">Klinik Pratama DRW Estetika</p>
+          <p className="text-pink-100 mt-2">Hubungi: 0857 1285 9999</p>
         </div>
       </section>
 
@@ -91,35 +100,30 @@ export default function HargaPage() {
           </p>
 
           <div className="space-y-16">
-            {Object.entries(menuData.menu_lengkap).map(([category, items]) => (
-              <div key={category}>
+            {categories.map((category) => (
+              <div key={category.id}>
                 <h2 className="text-3xl font-bold text-pink-900 mb-8 pb-4 border-b-2 border-pink-200">
-                  {category.replace(/_/g, ' ').toUpperCase()}
+                  {category.name}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-6">
-                  {items.map((item, idx) => (
-                    <div key={idx} className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-pink-100">
-                      <h3 className="text-xl font-bold text-pink-900 mb-2">{item.nama}</h3>
+                  {category.treatments.map((treatment) => (
+                    <div key={treatment.id} className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-pink-100">
+                      <h3 className="text-xl font-bold text-pink-900 mb-2">{treatment.name}</h3>
                       
                       <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-2"><strong>Layanan:</strong></p>
-                        <div className="flex flex-wrap gap-2">
-                          {item.layanan.map((service, i) => (
-                            <span key={i} className="bg-pink-200 text-pink-800 text-xs px-3 py-1 rounded-full font-medium">
-                              {service}
-                            </span>
-                          ))}
-                        </div>
+                        <span className="bg-pink-200 text-pink-800 text-xs px-3 py-1 rounded-full font-medium">
+                          ⏱️ {treatment.duration} menit
+                        </span>
                       </div>
 
-                      <p className="text-gray-700 mb-4 text-sm">{item.manfaat}</p>
+                      <p className="text-gray-700 mb-4 text-sm">{treatment.description}</p>
 
                       <div className="bg-white rounded-lg p-4 mb-4">
-                        <p className="text-3xl font-bold text-pink-600">{item.harga}</p>
+                        <p className="text-3xl font-bold text-pink-600">{formatPrice(treatment.price)}</p>
                       </div>
 
-                      <Link href="/kontak" className="inline-block w-full text-center bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                        Pesan Sekarang
+                      <Link href="/reservation" className="inline-block w-full text-center bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        Reservasi Sekarang
                       </Link>
                     </div>
                   ))}
@@ -186,7 +190,7 @@ export default function HargaPage() {
             <Link href="/kontak" className="bg-white text-pink-600 hover:bg-pink-50 px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl">
               Hubungi Sekarang
             </Link>
-            <a href={`https://wa.me/${menuData.kontak.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl">
+            <a href="https://wa.me/6285712859999" target="_blank" rel="noopener noreferrer" className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 shadow-lg hover:shadow-xl">
               💬 WhatsApp
             </a>
           </div>
