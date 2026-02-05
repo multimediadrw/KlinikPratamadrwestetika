@@ -61,7 +61,7 @@ export default function MobileAppLayout({ children }: MobileAppLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
       <header className="bg-gradient-to-br from-pink-600 via-pink-500 to-rose-400 text-white px-4 pt-6 pb-24 rounded-b-[32px]">
         <div className="flex justify-between items-center mb-6">

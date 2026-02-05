@@ -62,7 +62,7 @@ export default function MobileHome() {
   ];
 
   return (
-    <div className="px-4 space-y-6">
+    <div className="px-4 space-y-6 pb-24">
       {/* Service Cards */}
       <div className="bg-white rounded-2xl shadow-md p-4 space-y-3">
         {treatmentCategories.map((category, idx) => (
@@ -143,7 +143,7 @@ export default function MobileHome() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-3 pb-4">
+      <div className="grid grid-cols-2 gap-3 mb-6">
         <Link
           href="/reservation"
           className="bg-pink-600 text-white rounded-xl p-4 text-center font-semibold shadow-lg hover:bg-pink-700 transition-colors flex items-center justify-center gap-2"
