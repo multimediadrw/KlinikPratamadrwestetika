@@ -96,13 +96,14 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { count = 1, code, notes } = body;
+    const { count = 1, code, notes, customCode } = body;
 
-    // If specific code is provided, create single code
-    if (code) {
+    // If custom code is provided, create single code
+    if (customCode || code) {
+      const codeToUse = customCode || code;
       // Check if code already exists
       const existing = await prisma.preClaimAffiliateCode.findUnique({
-        where: { code },
+        where: { code: codeToUse },
       });
 
       if (existing) {
@@ -112,9 +113,8 @@ export async function POST(req: Request) {
       // Create new code
       const newCode = await prisma.preClaimAffiliateCode.create({
         data: {
-          code,
+          code: codeToUse,
           notes,
-          createdBy: user.id,
           status: 'unclaimed',
         },
       });

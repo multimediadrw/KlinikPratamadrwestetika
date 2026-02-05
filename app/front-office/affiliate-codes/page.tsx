@@ -29,7 +29,7 @@ export default function AffiliateCodesPage() {
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [generateCount, setGenerateCount] = useState(1);
+  const [customCode, setCustomCode] = useState('');
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -53,23 +53,30 @@ export default function AffiliateCodesPage() {
   }, [isLoaded]);
 
   const handleGenerateCodes = async () => {
+    if (!customCode.trim()) {
+      alert('Please enter a code');
+      return;
+    }
+
     try {
       const response = await fetch('/api/admin/codes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ count: generateCount }),
+        body: JSON.stringify({ customCode: customCode.trim().toUpperCase() }),
       });
 
       if (response.ok) {
-        const newCodes = await response.json();
-        setCodes([...newCodes, ...codes]);
         setShowGenerateModal(false);
-        setGenerateCount(1);
+        setCustomCode('');
         // Refresh data
         window.location.reload();
+      } else {
+        const error = await response.json();
+        alert(error.error || 'Failed to create code');
       }
     } catch (error) {
-      console.error('Error generating codes:', error);
+      console.error('Error generating code:', error);
+      alert('Error creating code');
     }
   };
 
@@ -271,15 +278,15 @@ export default function AffiliateCodesPage() {
       {showGenerateModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-gray-900 border border-yellow-800/30 rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 className="text-2xl font-bold text-yellow-500 mb-4">Generate New Codes</h3>
-            <p className="text-gray-400 mb-6">How many affiliate codes do you want to generate?</p>
+            <h3 className="text-2xl font-bold text-yellow-500 mb-4">Generate New Code</h3>
+            <p className="text-gray-400 mb-6">Enter a custom affiliate code (e.g., DRWPRIME21)</p>
             <input
-              type="number"
-              min="1"
-              max="100"
-              value={generateCount}
-              onChange={(e) => setGenerateCount(parseInt(e.target.value) || 1)}
-              className="w-full bg-yellow-900/20 border border-yellow-800/30 text-white rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-yellow-600"
+              type="text"
+              placeholder="Enter code (e.g., DRWPRIME21)"
+              value={customCode}
+              onChange={(e) => setCustomCode(e.target.value.toUpperCase())}
+              className="w-full bg-yellow-900/20 border border-yellow-800/30 text-white rounded-lg px-4 py-3 mb-6 focus:outline-none focus:border-yellow-600 font-mono text-lg"
+              maxLength={20}
             />
             <div className="flex gap-4">
               <button
