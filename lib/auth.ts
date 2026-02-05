@@ -38,8 +38,8 @@ export async function requireAdmin() {
 export async function requireFrontOffice() {
   const user = await requireAuth();
   
-  if (!user.isFrontOffice && !user.isAdmin) {
-    throw new Error('Forbidden: Front office access required');
+  if (!user.isAdmin) {
+    throw new Error('Forbidden: Admin access required for front office');
   }
 
   return user;

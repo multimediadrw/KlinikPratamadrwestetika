@@ -17,8 +17,8 @@ export async function GET() {
       where: { clerkUserId: userId },
     });
 
-    if (!user?.isAdmin && !user?.isFrontOffice) {
-      return NextResponse.json({ error: 'Forbidden - Admin or Front Office access required' }, { status: 403 });
+    if (!user?.isAdmin) {
+      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
     // Get all codes with user info
@@ -91,8 +91,8 @@ export async function POST(req: Request) {
       where: { clerkUserId: userId },
     });
 
-    if (!user?.isAdmin && !user?.isFrontOffice) {
-      return NextResponse.json({ error: 'Forbidden - Admin or Front Office access required' }, { status: 403 });
+    if (!user?.isAdmin) {
+      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
     }
 
     const body = await req.json();
