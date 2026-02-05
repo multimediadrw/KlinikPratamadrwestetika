@@ -118,6 +118,7 @@ export async function POST(req: Request) {
           status: 'unclaimed',
           usageCount: 0,
           totalCommission: 0,
+          createdBy: user.id,
         },
       });
 
@@ -167,8 +168,12 @@ export async function POST(req: Request) {
       message: `Successfully generated ${result.count} codes`,
       count: result.count 
     }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating codes:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Internal server error', 
+      details: error.message,
+      code: error.code 
+    }, { status: 500 });
   }
 }
