@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
-import prisma from './prisma';
+import { prisma } from './prisma';
 
 const SESSION_COOKIE_NAME = 'admin_session';
 const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
