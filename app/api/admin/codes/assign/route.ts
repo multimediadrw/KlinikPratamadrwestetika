@@ -62,11 +62,15 @@ export async function POST(request: NextRequest) {
 
     if (!user) {
       // Create new user (without password, they'll use the affiliate link)
+      // Generate unique affiliate code
+      const affiliateCode = 'AFF' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      
       user = await prisma.user.create({
         data: {
           email,
-          name: email.split('@')[0], // Use email prefix as name
+          firstName: email.split('@')[0], // Use email prefix as firstName
           password: '', // No password needed for affiliators
+          affiliateCode,
           isAdmin: false,
         },
       });
