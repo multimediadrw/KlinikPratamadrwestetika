@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireFrontOffice } from '@/lib/auth';
+import { requireAuth } from '@/lib/simple-auth';
 
 export async function GET() {
   try {
-    // Check if user has front office access
-    await requireFrontOffice();
+    // Check authentication
+    await requireAuth();
 
     // Get today's date range
     const today = new Date();

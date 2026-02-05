@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { calculateCommission } from '@/lib/affiliate-utils';
-import { requireFrontOffice } from '@/lib/auth';
+import { requireAuth } from '@/lib/simple-auth';
 
 /**
  * GET /api/front-office/reservations
@@ -9,8 +9,8 @@ import { requireFrontOffice } from '@/lib/auth';
  */
 export async function GET(request: NextRequest) {
   try {
-    // Check if user has front office access
-    await requireFrontOffice();
+    // Check authentication
+    await requireAuth();
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
@@ -68,8 +68,8 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    // Check if user has front office access
-    await requireFrontOffice();
+    // Check authentication
+    await requireAuth();
 
     const body = await request.json();
     const {
@@ -213,8 +213,8 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    // Check if user has front office access
-    await requireFrontOffice();
+    // Check authentication
+    await requireAuth();
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

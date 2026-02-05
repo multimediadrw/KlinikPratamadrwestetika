@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -25,7 +25,8 @@ interface Reservation {
 }
 
 export default function FrontOfficeDashboard() {
-  const { userId, isLoaded } = useAuth();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,35 +34,59 @@ export default function FrontOfficeDashboard() {
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
-    if (!isLoaded) return;
-
-    const fetchData = async () => {
+    const checkAuth = async () => {
       try {
-        const [statsRes, reservationsRes] = await Promise.all([
-          fetch('/api/front-office/dashboard/stats'),
-          fetch('/api/front-office/reservations')
-        ]);
-
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          setStats(statsData);
-        }
-
-        if (reservationsRes.ok) {
-          const reservationsData = await reservationsRes.json();
-          setReservations(reservationsData);
+        const response = await fetch('/api/auth/check');
+        if (response.ok) {
+          setIsAuthenticated(true);
+          fetchData();
+        } else {
+          setIsAuthenticated(false);
+          router.push('/login');
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
+        console.error('Auth check error:', error);
+        setIsAuthenticated(false);
+        router.push('/login');
       }
     };
 
-    fetchData();
-  }, [isLoaded]);
+    checkAuth();
+  }, [router]);
 
-  if (!isLoaded || loading) {
+  const fetchData = async () => {
+    try {
+      const [statsRes, reservationsRes] = await Promise.all([
+        fetch('/api/front-office/dashboard/stats'),
+        fetch('/api/front-office/reservations')
+      ]);
+
+      if (statsRes.ok) {
+        const statsData = await statsRes.json();
+        setStats(statsData);
+      }
+
+      if (reservationsRes.ok) {
+        const reservationsData = await reservationsRes.json();
+        setReservations(reservationsData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  if (isAuthenticated === null || loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
@@ -72,18 +97,8 @@ export default function FrontOfficeDashboard() {
     );
   }
 
-  if (!userId) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Access Denied</h1>
-          <p className="text-gray-400 mb-6">You need to be logged in to access this page.</p>
-          <Link href="/sign-in" className="text-yellow-500 hover:text-yellow-400 font-semibold">
-            Sign In
-          </Link>
-        </div>
-      </div>
-    );
+  if (!isAuthenticated) {
+    return null; // Will redirect to login
   }
 
   const filteredReservations = reservations.filter(res => {
@@ -120,6 +135,12 @@ export default function FrontOfficeDashboard() {
             >
               → Manage Affiliate Codes
             </Link>
+            <button
+              onClick={handleLogout}
+              className="text-gray-400 hover:text-white transition-colors px-4 py-2 border border-gray-700 rounded-lg"
+            >
+              Logout
+            </button>
             <Image 
               src="/logo.png" 
               alt="DRW Prime" 

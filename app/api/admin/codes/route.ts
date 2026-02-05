@@ -1,20 +1,17 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 import { generateRandomAffiliateCode } from '@/lib/affiliate-utils';
+import { requireAuth } from '@/lib/simple-auth';
 
 // GET all codes with stats
 export async function GET() {
   try {
-    const { userId } = await auth();
+    // Check authentication
+    const session = await requireAuth();
     
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check if user is admin or front office
+    // Get user
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
+      where: { id: session.userId },
     });
 
     if (!user?.isAdmin) {
@@ -80,15 +77,12 @@ export async function GET() {
 // POST create new codes (bulk generation)
 export async function POST(req: Request) {
   try {
-    const { userId } = await auth();
+    // Check authentication
+    const session = await requireAuth();
     
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check if user is admin or front office
+    // Get user
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
+      where: { id: session.userId },
     });
 
     if (!user?.isAdmin) {

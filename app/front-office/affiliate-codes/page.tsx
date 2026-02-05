@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -23,7 +23,8 @@ interface Stats {
 }
 
 export default function AffiliateCodesPage() {
-  const { userId, isLoaded } = useAuth();
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [codes, setCodes] = useState<AffiliateCode[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,9 +33,27 @@ export default function AffiliateCodesPage() {
   const [customCode, setCustomCode] = useState('');
 
   useEffect(() => {
-    if (!isLoaded) return;
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check');
+        if (response.ok) {
+          setIsAuthenticated(true);
+          fetchData();
+        } else {
+          setIsAuthenticated(false);
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        setIsAuthenticated(false);
+        router.push('/login');
+      }
+    };
 
-    const fetchData = async () => {
+    checkAuth();
+  }, [router]);
+
+  const fetchData = async () => {
       try {
         const response = await fetch('/api/admin/codes');
         if (response.ok) {
@@ -48,9 +67,6 @@ export default function AffiliateCodesPage() {
         setLoading(false);
       }
     };
-
-    fetchData();
-  }, [isLoaded]);
 
   const handleGenerateCodes = async () => {
     if (!customCode.trim()) {
@@ -85,7 +101,16 @@ export default function AffiliateCodesPage() {
     alert('Code copied to clipboard!');
   };
 
-  if (!isLoaded || loading) {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  if (isAuthenticated === null || loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
@@ -96,7 +121,11 @@ export default function AffiliateCodesPage() {
     );
   }
 
-  if (!userId) {
+  if (!isAuthenticated) {
+    return null; // Will redirect to login
+  }
+
+  if (false) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
