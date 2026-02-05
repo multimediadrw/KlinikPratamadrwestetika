@@ -53,6 +53,8 @@ export const metadata: Metadata = {
   },
 };
 
+import NavBar from '@/components/NavBar';
+
 export default function RootLayout({
   children,
 }: {
@@ -160,26 +162,9 @@ export default function RootLayout({
           }}
         />
       </head>
-         <body className="antialiased">
+      <body className="antialiased">
         <ClerkProvider>
-          <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between h-20">
-                <Link href="/" className="flex items-center gap-2">
-                  <img src="/logo.png" alt="DRW Estetika - Klinik Kecantikan" className="h-16 w-auto" />
-                </Link>
-                <div className="hidden md:flex items-center space-x-8">
-                  <Link href="/" className="text-gray-700 hover:text-pink-600 font-medium">Beranda</Link>
-                  <Link href="/galeri" className="text-gray-700 hover:text-pink-600 font-medium">Galeri</Link>
-                  <Link href="/testimoni" className="text-gray-700 hover:text-pink-600 font-medium">Testimoni</Link>
-                  <Link href="/harga" className="text-gray-700 hover:text-pink-600 font-medium">Harga</Link>
-                  <Link href="/faq" className="text-gray-700 hover:text-pink-600 font-medium">FAQ</Link>
-                  <Link href="/kontak" className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-full font-semibold">Kontak</Link>
-                </div>
-              </div>
-            </div>
-          </nav>
-
+          <NavBar />
           <div className="pt-20">
             {children}
           </div>

@@ -1,6 +1,20 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const refCode = searchParams.get('ref');
+
+  useEffect(() => {
+    if (refCode) {
+      // Redirect ke form reservasi dengan ref code
+      router.push(`/reservation?ref=${refCode}`);
+    }
+  }, [refCode, router]);
   return (
     <main className="bg-white">
       {/* Hero Section with Background Image */}

@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import QRCode from 'qrcode';
 
 interface AffiliateCode {
   id: string;
@@ -31,6 +32,10 @@ export default function AffiliateCodesPage() {
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [customCode, setCustomCode] = useState('');
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [selectedCodeForQR, setSelectedCodeForQR] = useState<string | null>(null);
+  const [qrCodeDataURL, setQrCodeDataURL] = useState<string>('');
+  const qrCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -96,9 +101,39 @@ export default function AffiliateCodesPage() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    alert('Code copied to clipboard!');
+  const copyToClipboard = (code: string) => {
+    const link = `${window.location.origin}/?ref=${code}`;
+    navigator.clipboard.writeText(link);
+    alert('Referral link copied to clipboard!');
+  };
+
+  const generateQRCode = async (code: string) => {
+    try {
+      const link = `${window.location.origin}/?ref=${code}`;
+      const dataURL = await QRCode.toDataURL(link, {
+        width: 400,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      setQrCodeDataURL(dataURL);
+      setSelectedCodeForQR(code);
+      setShowQRModal(true);
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      alert('Failed to generate QR code');
+    }
+  };
+
+  const downloadQRCode = () => {
+    if (!qrCodeDataURL || !selectedCodeForQR) return;
+    
+    const link = document.createElement('a');
+    link.download = `QR-${selectedCodeForQR}.png`;
+    link.href = qrCodeDataURL;
+    link.click();
   };
 
   const handleLogout = async () => {
@@ -276,7 +311,12 @@ export default function AffiliateCodesPage() {
                           >
                             Copy Link
                           </button>
-                          <span className="text-gray-600">OR</span>
+                          <button
+                            onClick={() => generateQRCode(code.code)}
+                            className="bg-purple-900/30 hover:bg-purple-900/50 text-purple-400 text-xs px-3 py-1 rounded border border-purple-700 transition-colors"
+                          >
+                            QR Code
+                          </button>
                           {code.status === 'unclaimed' && (
                             <>
                               <button className="bg-blue-900/30 hover:bg-blue-900/50 text-blue-400 text-xs px-3 py-1 rounded border border-blue-700 transition-colors">
@@ -302,6 +342,41 @@ export default function AffiliateCodesPage() {
           </div>
         </div>
       </div>
+
+      {/* QR Code Modal */}
+      {showQRModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowQRModal(false)}>
+          <div className="bg-gray-900 border border-purple-800/30 rounded-lg p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-purple-400 mb-4">QR Code - {selectedCodeForQR}</h3>
+            <p className="text-gray-400 mb-6">Scan QR code ini untuk langsung ke form reservasi dengan kode affiliate</p>
+            
+            <div className="bg-white p-6 rounded-lg mb-6 flex items-center justify-center">
+              {qrCodeDataURL && (
+                <img src={qrCodeDataURL} alt="QR Code" className="w-full max-w-[300px]" />
+              )}
+            </div>
+            
+            <div className="text-sm text-gray-400 mb-6 break-all">
+              Link: {window.location.origin}/?ref={selectedCodeForQR}
+            </div>
+            
+            <div className="flex gap-4">
+              <button
+                onClick={() => setShowQRModal(false)}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={downloadQRCode}
+                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-lg transition-colors"
+              >
+                Download QR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Generate Modal */}
       {showGenerateModal && (
