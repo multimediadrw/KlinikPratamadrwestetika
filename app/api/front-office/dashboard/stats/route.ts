@@ -7,18 +7,39 @@ export async function GET() {
     // Check if user has front office access
     await requireFrontOffice();
 
-    const [totalReservations, pendingReservations, completedReservations, totalAffiliates] = await Promise.all([
+    // Get today's date range
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const [
+      totalReservations, 
+      pendingReservations, 
+      confirmedReservations,
+      completedReservations, 
+      totalToday
+    ] = await Promise.all([
       prisma.reservation.count(),
       prisma.reservation.count({ where: { status: 'pending' } }),
+      prisma.reservation.count({ where: { status: 'confirmed' } }),
       prisma.reservation.count({ where: { status: 'completed' } }),
-      prisma.user.count({ where: { isAdmin: false } }),
+      prisma.reservation.count({
+        where: {
+          reservationDate: {
+            gte: today,
+            lt: tomorrow,
+          },
+        },
+      }),
     ]);
 
     return NextResponse.json({
       totalReservations,
       pendingReservations,
+      confirmedReservations,
       completedReservations,
-      totalAffiliates,
+      totalToday,
     });
   } catch (error) {
     console.error('Error fetching stats:', error);

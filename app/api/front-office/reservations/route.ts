@@ -2,80 +2,60 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/prisma';
 import { calculateCommission } from '@/lib/affiliate-utils';
+import { requireFrontOffice } from '@/lib/auth';
 
 /**
  * GET /api/front-office/reservations
- * List semua reservasi (admin only)
+ * List semua reservasi (front office/admin only)
  */
 export async function GET(request: NextRequest) {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    // Verify user is admin
-    const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
-    });
-
-    if (!user?.isAdmin) {
-      return NextResponse.json(
-        { error: 'Forbidden - Admin access required' },
-        { status: 403 }
-      );
-    }
+    // Check if user has front office access
+    await requireFrontOffice();
 
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
-    const skip = (page - 1) * limit;
 
     const where: any = {};
-    if (status) {
+    if (status && status !== 'all') {
       where.status = status;
     }
 
-    const [reservations, total] = await Promise.all([
-      prisma.reservation.findMany({
-        where,
-        include: {
-          treatment: true,
-          referrer: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              affiliateCode: true,
-            },
+    const reservations = await prisma.reservation.findMany({
+      where,
+      include: {
+        treatment: {
+          select: {
+            name: true,
           },
-          preClaimCode: true,
         },
-        orderBy: {
-          createdAt: 'desc',
+        referrer: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            affiliateCode: true,
+          },
         },
-        skip,
-        take: limit,
-      }),
-      prisma.reservation.count({ where }),
-    ]);
-
-    return NextResponse.json({
-      data: reservations,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
+        preClaimCode: true,
       },
+      orderBy: {
+        reservationDate: 'desc',
+      },
+      take: 100, // Limit to recent 100
     });
+
+    return NextResponse.json(reservations);
   } catch (error) {
     console.error('Error fetching reservations:', error);
+    
+    if (error instanceof Error && (error.message === 'Unauthorized' || error.message.includes('Forbidden'))) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.message === 'Unauthorized' ? 401 : 403 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Failed to fetch reservations' },
       { status: 500 }
@@ -85,30 +65,12 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/front-office/reservations
- * Update atau create reservasi (admin only)
+ * Update atau create reservasi (front office/admin only)
  */
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    // Verify user is admin
-    const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
-    });
-
-    if (!user?.isAdmin) {
-      return NextResponse.json(
-        { error: 'Forbidden - Admin access required' },
-        { status: 403 }
-      );
-    }
+    // Check if user has front office access
+    await requireFrontOffice();
 
     const body = await request.json();
     const {
@@ -231,6 +193,14 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error('Error managing reservation:', error);
+    
+    if (error instanceof Error && (error.message === 'Unauthorized' || error.message.includes('Forbidden'))) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.message === 'Unauthorized' ? 401 : 403 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Failed to manage reservation' },
       { status: 500 }
@@ -240,30 +210,12 @@ export async function POST(request: NextRequest) {
 
 /**
  * DELETE /api/front-office/reservations?id=xxx
- * Delete reservasi (admin only)
+ * Delete reservasi (front office/admin only)
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-
-    // Verify user is admin
-    const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
-    });
-
-    if (!user?.isAdmin) {
-      return NextResponse.json(
-        { error: 'Forbidden - Admin access required' },
-        { status: 403 }
-      );
-    }
+    // Check if user has front office access
+    await requireFrontOffice();
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -282,6 +234,14 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting reservation:', error);
+    
+    if (error instanceof Error && (error.message === 'Unauthorized' || error.message.includes('Forbidden'))) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.message === 'Unauthorized' ? 401 : 403 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Failed to delete reservation' },
       { status: 500 }
