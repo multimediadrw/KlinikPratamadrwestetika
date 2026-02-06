@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
         claimedBy: user.id,
         claimedAt: new Date(),
         status: 'claimed',
+        assignedEmail: user.email, // Update assignedEmail saat claim
       },
     });
 

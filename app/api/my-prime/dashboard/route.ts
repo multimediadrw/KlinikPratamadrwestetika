@@ -9,6 +9,8 @@ export async function GET() {
     const cookieStore = await cookies();
     const userEmail = cookieStore.get('user_email')?.value;
 
+    console.log('[MY PRIME DEBUG] User email from cookie:', userEmail);
+
     if (!userEmail) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -16,12 +18,24 @@ export async function GET() {
       );
     }
 
-    // Cari kode affiliate yang di-assign ke email ini
+    // Cari kode affiliate yang di-assign atau di-claim oleh user ini
+    // Pertama cari user berdasarkan email
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail },
+    });
+
+    console.log('[MY PRIME DEBUG] User from DB:', user);
+
     const affiliateCode = await prisma.preClaimAffiliateCode.findFirst({
       where: {
-        assignedEmail: userEmail,
+        OR: [
+          { assignedEmail: userEmail },
+          { claimedBy: user?.id },
+        ],
       },
     });
+
+    console.log('[MY PRIME DEBUG] Affiliate code found:', affiliateCode);
 
     if (!affiliateCode) {
       return NextResponse.json(
