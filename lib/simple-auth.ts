@@ -13,18 +13,31 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-export async function createSession(userId: string): Promise<string> {
+export async function createSession(userId: string, userEmail?: string): Promise<string> {
   const sessionToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
   const expiresAt = new Date(Date.now() + SESSION_DURATION);
   
+  const cookieStore = await cookies();
+  
   // Store session in cookie
-  (await cookies()).set(SESSION_COOKIE_NAME, sessionToken, {
+  cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     expires: expiresAt,
     path: '/',
   });
+  
+  // Also set user_email cookie for My Prime dashboard
+  if (userEmail) {
+    cookieStore.set('user_email', userEmail, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      expires: expiresAt,
+      path: '/',
+    });
+  }
   
   return sessionToken;
 }
@@ -54,7 +67,9 @@ export async function getSession(): Promise<{ userId: string; email: string } | 
 }
 
 export async function destroySession(): Promise<void> {
-  (await cookies()).delete(SESSION_COOKIE_NAME);
+  const cookieStore = await cookies();
+  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete('user_email');
 }
 
 export async function requireAuth(): Promise<{ userId: string; email: string }> {
@@ -88,7 +103,7 @@ export async function login(email: string, password: string): Promise<{ success:
       return { success: false, error: 'Invalid email or password' };
     }
     
-    await createSession(user.id);
+    await createSession(user.id, user.email);
     
     return { success: true, userId: user.id };
   } catch (error) {
