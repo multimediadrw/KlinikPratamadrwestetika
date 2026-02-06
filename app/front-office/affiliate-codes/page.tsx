@@ -341,6 +341,18 @@ export default function AffiliateCodesPage() {
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-2 flex-wrap">
+                          {code.assignedEmail && (
+                            <button
+                              onClick={() => {
+                                const dashboardUrl = `${window.location.origin}/dashboard/${code.code}`;
+                                navigator.clipboard.writeText(dashboardUrl);
+                                alert('Dashboard link copied! Share this with the affiliate.');
+                              }}
+                              className="bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs px-3 py-1 rounded border border-pink-300 transition-colors font-semibold"
+                            >
+                              📊 Dashboard Link
+                            </button>
+                          )}
                           <button
                             onClick={() => copyToClipboard(code.code)}
                             className="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-xs px-3 py-1 rounded border border-yellow-300 transition-colors"
