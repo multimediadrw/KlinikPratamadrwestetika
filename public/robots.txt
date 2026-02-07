@@ -4,7 +4,7 @@ Disallow: /admin
 Disallow: /.next
 Disallow: /api
 
-Sitemap: https://drwskincare.com/sitemap.xml
+Sitemap: https://klinik.drwskincare.com/sitemap.xml
 
 # Google-specific rules
 User-agent: Googlebot
