@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Script from 'next/script';
-import { ClerkProvider } from '@clerk/nextjs';
+import { Providers } from './providers';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -184,14 +184,14 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ClerkProvider>
+        <Providers>
           <ConditionalNav />
           <div className="md:pt-20">
             {children}
           </div>
 
           <ConditionalFooter />
-        </ClerkProvider>
+        </Providers>
       </body>
     </html>
   );
