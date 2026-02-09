@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/nextauth';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -7,9 +8,9 @@ export const dynamic = 'force-dynamic';
 // POST - Create withdrawal request
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await getServerSession(authOptions);
     
-    if (!userId) {
+    if (!session || !session.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -27,16 +28,45 @@ export async function POST(req: NextRequest) {
 
     // Get user from database
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId }
+      where: { email: session.user.email }
     });
 
     if (!user) {
       return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
     }
 
+    // Get affiliate code for this user
+    const affiliateCode = await prisma.preClaimAffiliateCode.findFirst({
+      where: {
+        OR: [
+          { assignedEmail: session.user.email },
+          { claimedBy: user.id },
+        ],
+      },
+    });
+
+    if (!affiliateCode) {
+      return NextResponse.json({ error: 'Kode affiliate tidak ditemukan' }, { status: 404 });
+    }
+
+    // Get completed reservations to calculate available balance
+    const completedReservations = await prisma.reservation.findMany({
+      where: {
+        referredBy: affiliateCode.code,
+        status: 'completed'
+      }
+    });
+
+    const availableBalance = completedReservations.reduce(
+      (sum, r) => sum + Number(r.commissionAmount),
+      0
+    );
+
     // Check if user has enough balance
-    if (parseFloat(user.totalEarnings.toString()) < amount) {
-      return NextResponse.json({ error: 'Saldo komisi tidak mencukupi' }, { status: 400 });
+    if (availableBalance < amount) {
+      return NextResponse.json({ 
+        error: `Saldo tidak mencukupi. Saldo tersedia: Rp ${availableBalance.toLocaleString('id-ID')}` 
+      }, { status: 400 });
     }
 
     // Check if bank account already exists for this user
@@ -76,21 +106,21 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    // Deduct from user's total earnings
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        totalEarnings: {
-          decrement: amount
-        }
-      }
-    });
-
-    console.log(`[WITHDRAWAL] New request created: ${withdrawal.id} - ${amount} for user ${user.email}`);
+    console.log(`[WITHDRAWAL] New request created: ${withdrawal.id} - Rp ${amount} for user ${user.email}`);
 
     return NextResponse.json({
       success: true,
-      withdrawal
+      message: 'Permintaan penarikan berhasil dibuat',
+      withdrawal: {
+        id: withdrawal.id,
+        amount: Number(withdrawal.amount),
+        status: withdrawal.status,
+        accountType: withdrawal.bankAccount.accountType,
+        bankName: withdrawal.bankAccount.bankName,
+        accountNumber: withdrawal.bankAccount.accountNumber,
+        accountName: withdrawal.bankAccount.accountName,
+        createdAt: withdrawal.createdAt.toISOString()
+      }
     }, { status: 201 });
 
   } catch (error) {
@@ -105,15 +135,15 @@ export async function POST(req: NextRequest) {
 // GET - Get user's withdrawals
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
+    const session = await getServerSession(authOptions);
     
-    if (!userId) {
+    if (!session || !session.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get user from database
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId }
+      where: { email: session.user.email }
     });
 
     if (!user) {
@@ -133,9 +163,23 @@ export async function GET(req: NextRequest) {
       }
     });
 
+    // Format withdrawals
+    const formattedWithdrawals = withdrawals.map(w => ({
+      id: w.id,
+      amount: Number(w.amount),
+      status: w.status,
+      accountType: w.bankAccount.accountType,
+      bankName: w.bankAccount.bankName,
+      accountNumber: w.bankAccount.accountNumber,
+      accountName: w.bankAccount.accountName,
+      createdAt: w.createdAt.toISOString(),
+      processedDate: w.processedDate?.toISOString() || null,
+      adminNotes: w.adminNotes
+    }));
+
     return NextResponse.json({
       success: true,
-      withdrawals
+      withdrawals: formattedWithdrawals
     }, { status: 200 });
 
   } catch (error) {

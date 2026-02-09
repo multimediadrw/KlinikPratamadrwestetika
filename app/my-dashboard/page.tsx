@@ -4,6 +4,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import WithdrawalModal from '@/components/WithdrawalModal';
 
 interface DashboardData {
   affiliateCode: string;
@@ -32,6 +33,7 @@ export default function MyDashboard() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -236,7 +238,10 @@ export default function MyDashboard() {
               <h3 className="text-4xl font-bold mb-4">
                 Rp {dashboardData.availableBalance.toLocaleString('id-ID')}
               </h3>
-              <button className="bg-white text-yellow-600 hover:bg-yellow-50 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl">
+              <button 
+                onClick={() => setShowWithdrawalModal(true)}
+                className="bg-white text-yellow-600 hover:bg-yellow-50 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl"
+              >
                 Tarik Komisi
               </button>
             </div>
@@ -260,6 +265,14 @@ export default function MyDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Withdrawal Modal */}
+      <WithdrawalModal
+        isOpen={showWithdrawalModal}
+        onClose={() => setShowWithdrawalModal(false)}
+        availableBalance={dashboardData.availableBalance}
+        onSuccess={fetchDashboardData}
+      />
     </div>
   );
 }
