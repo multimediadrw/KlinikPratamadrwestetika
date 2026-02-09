@@ -2,9 +2,10 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import WithdrawalModal from '@/components/WithdrawalModal';
+import { QRCodeCanvas } from 'qrcode.react';
 
 interface DashboardData {
   affiliateCode: string;
@@ -34,6 +35,7 @@ export default function MyDashboard() {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
+  const qrRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -65,6 +67,27 @@ export default function MyDashboard() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const downloadQRCode = () => {
+    if (!qrRef.current) return;
+    
+    const canvas = qrRef.current.querySelector('canvas');
+    if (!canvas) return;
+
+    // Convert canvas to blob and download
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `qr-code-${dashboardData?.affiliateCode || 'referral'}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
   };
 
   if (status === 'loading' || loading) {
@@ -161,10 +184,30 @@ export default function MyDashboard() {
               </div>
             </div>
             <div className="hidden md:block">
-              <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-                <svg className="w-24 h-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
+              <div className="bg-white rounded-2xl p-4 shadow-xl">
+                <div ref={qrRef} className="mb-3">
+                  <QRCodeCanvas
+                    value={dashboardData.referralLink}
+                    size={160}
+                    level="H"
+                    includeMargin={true}
+                    imageSettings={{
+                      src: "/logo.png",
+                      height: 24,
+                      width: 24,
+                      excavate: true,
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={downloadQRCode}
+                  className="w-full bg-pink-600 hover:bg-pink-700 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download QR
+                </button>
               </div>
             </div>
           </div>
@@ -227,6 +270,43 @@ export default function MyDashboard() {
             <p className="text-gray-600 text-sm mb-1">Customer</p>
             <p className="text-3xl font-bold text-gray-800">{dashboardData.totalCustomers}</p>
             <p className="text-sm text-gray-500 mt-1">Total dilayani</p>
+          </div>
+        </div>
+
+        {/* QR Code Card for Mobile */}
+        <div className="md:hidden bg-white rounded-3xl shadow-xl p-6 mb-8 border-2 border-pink-100">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg className="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+            </svg>
+            QR Code Referral
+          </h3>
+          <p className="text-gray-600 mb-4 text-sm">Scan QR code ini untuk langsung ke halaman reservasi dengan kode affiliate Anda</p>
+          <div className="flex flex-col items-center">
+            <div ref={qrRef} className="bg-gray-50 p-4 rounded-2xl mb-4">
+              <QRCodeCanvas
+                value={dashboardData.referralLink}
+                size={200}
+                level="H"
+                includeMargin={true}
+                imageSettings={{
+                  src: "/logo.png",
+                  height: 30,
+                  width: 30,
+                  excavate: true,
+                }}
+              />
+            </div>
+            <button
+              onClick={downloadQRCode}
+              className="w-full bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download QR Code
+            </button>
+            <p className="text-xs text-gray-500 mt-3 text-center">File akan tersimpan sebagai PNG</p>
           </div>
         </div>
 
