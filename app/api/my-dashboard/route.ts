@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -18,25 +18,46 @@ export async function GET() {
 
     const userEmail = session.user.email;
 
-    // Find affiliate code by email
-    const affiliateCode = await prisma.affiliateCode.findFirst({
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Find affiliate code assigned to or claimed by this user
+    const affiliateCode = await prisma.preClaimAffiliateCode.findFirst({
       where: {
-        email: userEmail,
-        status: 'claimed',
+        OR: [
+          { assignedEmail: userEmail },
+          { claimedBy: user.id },
+        ],
       },
     });
 
     if (!affiliateCode) {
       return NextResponse.json(
-        { error: 'No affiliate code found' },
+        { error: 'No affiliate code assigned' },
         { status: 404 }
       );
     }
 
-    // Get reservations for this affiliate code
+    // Get reservations that used this affiliate code
     const reservations = await prisma.reservation.findMany({
       where: {
-        affiliateCode: affiliateCode.code,
+        referredBy: affiliateCode.code,
+      },
+      include: {
+        treatment: {
+          select: {
+            name: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -44,55 +65,56 @@ export async function GET() {
     });
 
     // Calculate stats
+    const totalCommission = reservations.reduce(
+      (sum, r) => sum + Number(r.commissionAmount),
+      0
+    );
     const totalReservations = reservations.length;
-    const completedReservations = reservations.filter(r => r.status === 'completed').length;
-    const pendingReservations = reservations.filter(r => r.status === 'pending').length;
-    
-    // Calculate commission (10% of total price)
-    const totalCommission = reservations.reduce((sum, r) => {
-      if (r.status === 'completed') {
-        return sum + (r.totalPrice * 0.1);
-      }
-      return sum;
-    }, 0);
+    const pendingReservations = reservations.filter(
+      (r) => r.status === 'pending'
+    ).length;
+    const totalCustomers = new Set(reservations.map((r) => r.patientEmail)).size;
 
-    // Count unique customers
-    const uniqueCustomers = new Set(reservations.map(r => r.customerEmail || r.customerPhone)).size;
+    // Format reservations
+    const formattedReservations = reservations.map((r) => ({
+      id: r.id,
+      patientName: r.patientName,
+      patientEmail: r.patientEmail,
+      patientPhone: r.patientPhone,
+      treatmentName: r.treatment.name,
+      reservationDate: r.reservationDate.toISOString(),
+      reservationTime: r.reservationTime,
+      status: r.status,
+      finalPrice: r.finalPrice,
+      commissionAmount: r.commissionAmount,
+      createdAt: r.createdAt.toISOString(),
+    }));
 
     // Generate referral link
     const referralLink = `${process.env.NEXT_PUBLIC_APP_URL || 'https://klinik.drwskincare.com'}/?ref=${affiliateCode.code}`;
 
-    // Format reservations data
-    const formattedReservations = reservations.map(r => ({
-      id: r.id,
-      customerName: r.customerName,
-      treatment: r.treatment,
-      price: r.totalPrice,
-      commission: r.status === 'completed' ? r.totalPrice * 0.1 : 0,
-      status: r.status,
-      date: r.createdAt.toISOString(),
-    }));
-
     return NextResponse.json({
-      affiliateCode: affiliateCode.code,
-      email: userEmail,
-      referralLink,
-      totalCommission: Math.round(totalCommission),
-      totalReservations,
-      completedReservations,
-      pendingReservations,
-      totalCustomers: uniqueCustomers,
-      availableBalance: Math.round(totalCommission),
+      affiliate: {
+        code: affiliateCode.code,
+        assignedEmail: affiliateCode.assignedEmail,
+        status: affiliateCode.status,
+        usageCount: affiliateCode.usageCount,
+        totalCommission: Number(affiliateCode.totalCommission),
+        referralLink,
+      },
       reservations: formattedReservations,
+      stats: {
+        totalCommission,
+        totalReservations,
+        pendingReservations,
+        totalCustomers,
+      },
     });
-
   } catch (error) {
-    console.error('Dashboard API error:', error);
+    console.error('Error fetching MY DASHBOARD:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch dashboard data' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

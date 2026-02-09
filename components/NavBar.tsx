@@ -30,7 +30,7 @@ export default function NavBar() {
   };
 
   // Hide navbar on certain pages
-  if (pathname?.startsWith('/front-office') || pathname?.startsWith('/my-prime') || pathname?.startsWith('/reservation') || pathname?.startsWith('/my-dashboard')) {
+  if (pathname?.startsWith('/front-office') || pathname?.startsWith('/reservation') || pathname?.startsWith('/my-dashboard') || pathname?.startsWith('/sign-in')) {
     return null;
   }
 
