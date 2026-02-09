@@ -30,6 +30,7 @@ export default function WithdrawalModal({ isOpen, onClose, availableBalance, onS
   const [accountType, setAccountType] = useState<'bank' | 'ewallet' | ''>('');
   const [selectedProvider, setSelectedProvider] = useState('');
   const [amount, setAmount] = useState('');
+  const [displayAmount, setDisplayAmount] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [accountName, setAccountName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ export default function WithdrawalModal({ isOpen, onClose, availableBalance, onS
     setAccountType('');
     setSelectedProvider('');
     setAmount('');
+    setDisplayAmount('');
     setAccountNumber('');
     setAccountName('');
     setError('');
@@ -58,6 +60,25 @@ export default function WithdrawalModal({ isOpen, onClose, availableBalance, onS
 
   const handleProviderSelect = (provider: string) => {
     setSelectedProvider(provider);
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Remove all non-digit characters
+    const numericValue = value.replace(/\D/g, '');
+    
+    if (numericValue === '') {
+      setAmount('');
+      setDisplayAmount('');
+      return;
+    }
+    
+    // Store raw number
+    setAmount(numericValue);
+    
+    // Format with thousand separator
+    const formatted = parseInt(numericValue).toLocaleString('id-ID');
+    setDisplayAmount(formatted);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -264,11 +285,11 @@ export default function WithdrawalModal({ isOpen, onClose, availableBalance, onS
                     Rp
                   </span>
                   <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    type="text"
+                    value={displayAmount}
+                    onChange={handleAmountChange}
                     placeholder="0"
-                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none font-semibold"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none font-semibold text-lg"
                     required
                   />
                 </div>
