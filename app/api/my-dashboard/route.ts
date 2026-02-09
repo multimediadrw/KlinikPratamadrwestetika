@@ -70,45 +70,45 @@ export async function GET() {
       0
     );
     const totalReservations = reservations.length;
+    const completedReservations = reservations.filter(
+      (r) => r.status === 'completed'
+    ).length;
     const pendingReservations = reservations.filter(
       (r) => r.status === 'pending'
     ).length;
     const totalCustomers = new Set(reservations.map((r) => r.patientEmail)).size;
 
-    // Format reservations
+    // Calculate available balance (completed reservations only)
+    const availableBalance = reservations
+      .filter((r) => r.status === 'completed')
+      .reduce((sum, r) => sum + Number(r.commissionAmount), 0);
+
+    // Format reservations for frontend
     const formattedReservations = reservations.map((r) => ({
       id: r.id,
-      patientName: r.patientName,
-      patientEmail: r.patientEmail,
-      patientPhone: r.patientPhone,
-      treatmentName: r.treatment.name,
-      reservationDate: r.reservationDate.toISOString(),
-      reservationTime: r.reservationTime,
+      customerName: r.patientName,
+      treatment: r.treatment.name,
+      price: Number(r.finalPrice),
+      commission: Number(r.commissionAmount),
       status: r.status,
-      finalPrice: r.finalPrice,
-      commissionAmount: r.commissionAmount,
-      createdAt: r.createdAt.toISOString(),
+      date: r.reservationDate.toISOString(),
     }));
 
     // Generate referral link
     const referralLink = `${process.env.NEXT_PUBLIC_APP_URL || 'https://klinik.drwskincare.com'}/?ref=${affiliateCode.code}`;
 
+    // Return data matching frontend DashboardData interface
     return NextResponse.json({
-      affiliate: {
-        code: affiliateCode.code,
-        assignedEmail: affiliateCode.assignedEmail,
-        status: affiliateCode.status,
-        usageCount: affiliateCode.usageCount,
-        totalCommission: Number(affiliateCode.totalCommission),
-        referralLink,
-      },
+      affiliateCode: affiliateCode.code,
+      email: userEmail,
+      referralLink,
+      totalCommission,
+      totalReservations,
+      completedReservations,
+      pendingReservations,
+      totalCustomers,
+      availableBalance,
       reservations: formattedReservations,
-      stats: {
-        totalCommission,
-        totalReservations,
-        pendingReservations,
-        totalCustomers,
-      },
     });
   } catch (error) {
     console.error('Error fetching MY DASHBOARD:', error);
