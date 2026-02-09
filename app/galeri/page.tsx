@@ -43,16 +43,13 @@ export default function GaleriPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {facilityImages.map((item) => (
               <div key={item.id} className="bg-pink-50 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="relative h-48 bg-gray-200">
+                <div className="relative h-64 bg-gray-200">
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
                     className="object-cover"
                   />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-bold text-pink-900">{item.title}</h3>
                 </div>
               </div>
             ))}
