@@ -133,7 +133,19 @@ export default function FrontOfficeDashboard() {
               href="/front-office/affiliate-codes"
               className="text-pink-600 hover:text-pink-700 transition-colors flex items-center gap-2 font-medium"
             >
-              → Manage Affiliate Codes
+              → Affiliate Codes
+            </Link>
+            <Link 
+              href="/front-office/withdrawals"
+              className="text-pink-600 hover:text-pink-700 transition-colors flex items-center gap-2 font-medium"
+            >
+              → Withdrawals
+            </Link>
+            <Link 
+              href="/front-office/report"
+              className="text-pink-600 hover:text-pink-700 transition-colors flex items-center gap-2 font-medium"
+            >
+              → Report
             </Link>
             <button
               onClick={handleLogout}

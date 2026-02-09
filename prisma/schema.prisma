@@ -36,6 +36,8 @@ model User {
   reservations      Reservation[]
   referrals         Reservation[]  @relation("ReferredBy")
   claimedCodes      PreClaimAffiliateCode[] @relation("ClaimedBy")
+  bankAccounts      BankAccount[]
+  withdrawals       Withdrawal[]
 }
 
 // ============================================================================
@@ -154,6 +156,50 @@ model Reservation {
   @@index([preClaimCodeId])
   @@index([status])
   @@index([reservationDate])
+}
+
+// ============================================================================
+// BANK ACCOUNT & WITHDRAWAL MODELS
+// ============================================================================
+
+model BankAccount {
+  id              String    @id @default(cuid())
+  userId          String
+  accountType     String    // "bank" or "ewallet"
+  bankName        String    // Mandiri, BRI, BCA, BSI, CIMBNIAGA, BPD DIY, DANA, GOPAY, SHOPEEPAY, OVO
+  accountNumber   String
+  accountName     String
+  isDefault       Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  withdrawals     Withdrawal[]
+
+  @@map("bank_accounts")
+}
+
+model Withdrawal {
+  id              String    @id @default(cuid())
+  userId          String
+  bankAccountId   String
+  amount          Decimal   @db.Decimal(10, 2)
+  status          String    @default("pending") // pending, approved, rejected, completed
+  requestDate     DateTime  @default(now())
+  processedDate   DateTime?
+  processedBy     String?   // Admin user ID who processed
+  adminNotes      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bankAccount     BankAccount  @relation(fields: [bankAccountId], references: [id], onDelete: Restrict)
+
+  @@map("withdrawals")
 }
 
 // ============================================================================
