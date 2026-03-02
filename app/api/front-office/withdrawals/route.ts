@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/simple-auth';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -7,15 +7,11 @@ export const dynamic = 'force-dynamic';
 // GET - Get all withdrawal requests (Admin only)
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const session = await requireAuth();
 
     // Check if user is admin
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId }
+      where: { id: session.userId }
     });
 
     if (!user?.isAdmin) {
@@ -68,15 +64,11 @@ export async function GET(req: NextRequest) {
 // PATCH - Update withdrawal status (Admin only)
 export async function PATCH(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const session = await requireAuth();
 
     // Check if user is admin
     const adminUser = await prisma.user.findUnique({
-      where: { clerkUserId: userId }
+      where: { id: session.userId }
     });
 
     if (!adminUser?.isAdmin) {
@@ -123,7 +115,7 @@ export async function PATCH(req: NextRequest) {
         status,
         adminNotes: adminNotes || withdrawal.adminNotes,
         processedDate: new Date(),
-        processedBy: userId
+        processedBy: session.userId
       },
       include: {
         user: true,

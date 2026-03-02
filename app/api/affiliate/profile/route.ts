@@ -1,22 +1,15 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/simple-auth';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+    const session = await requireAuth();
 
     const user = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
+      where: { id: session.userId },
       select: {
         id: true,
         firstName: true,
@@ -27,6 +20,17 @@ export async function GET() {
         totalEarnings: true,
         commissionPending: true,
         commissionPaid: true,
+        isAdmin: true,
+        bankAccounts: {
+          select: {
+            id: true,
+            accountType: true,
+            bankName: true,
+            accountNumber: true,
+            accountName: true,
+            isDefault: true,
+          }
+        }
       },
     });
 

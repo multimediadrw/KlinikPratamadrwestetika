@@ -22,6 +22,7 @@ model User {
   firstName         String?
   lastName          String?
   affiliateCode     String         @unique // Kode affiliate unik
+  role              String         @default("user") // user, affiliate, admin
   isTeamLeader      Boolean        @default(false)
   isAdmin           Boolean        @default(false)
   totalReferrals    Int            @default(0)
