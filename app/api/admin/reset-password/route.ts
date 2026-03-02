@@ -24,17 +24,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
     }
 
+    // Hash password baru
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
     // Cari user berdasarkan email
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found with that email' }, { status: 404 });
+      // Buat user baru jika belum ada
+      const suffix = Date.now().toString().slice(-4);
+      const newUser = await prisma.user.create({
+        data: {
+          email,
+          firstName: 'DRW',
+          lastName: 'Klinik',
+          isAdmin: true,
+          password: hashedPassword,
+          affiliateCode: 'DRWADMIN' + suffix,
+          clerkUserId: 'manual_admin_' + email.replace(/[@.]/g, '_'),
+          totalReferrals: 0,
+          totalEarnings: 0,
+          commissionPending: 0,
+        },
+      });
+      return NextResponse.json({
+        success: true,
+        message: `Akun baru berhasil dibuat untuk ${newUser.email} dengan akses admin.`,
+        email: newUser.email,
+        isAdmin: newUser.isAdmin,
+        created: true,
+      });
     }
-
-    // Hash password baru
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // Update password dan pastikan isAdmin = true
     const updatedUser = await prisma.user.update({
