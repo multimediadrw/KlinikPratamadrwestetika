@@ -103,7 +103,7 @@ export default function AffiliateDashboard() {
       const res = await fetch('/api/affiliate/withdrawal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: parseFloat(withdrawalForm.amount), ...withdrawalForm }),
+        body: JSON.stringify({ ...withdrawalForm, amount: parseFloat(withdrawalForm.amount) }),
       });
       const json = await res.json();
       if (res.ok) {

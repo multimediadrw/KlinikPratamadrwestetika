@@ -123,7 +123,7 @@ export async function PATCH(req: NextRequest) {
       }
     });
 
-    console.log(`[FO WITHDRAWAL] Updated withdrawal ${withdrawalId} to status ${status} by admin ${userId}`);
+    console.log(`[FO WITHDRAWAL] Updated withdrawal ${withdrawalId} to status ${status} by admin ${session.userId}`);
 
     return NextResponse.json({
       success: true,
