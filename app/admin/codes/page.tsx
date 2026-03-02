@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 
 interface Code {
@@ -20,7 +19,7 @@ interface Code {
 }
 
 export default function AdminCodesPage() {
-  const { userId, isLoaded } = useAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [codes, setCodes] = useState<Code[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -35,9 +34,24 @@ export default function AdminCodesPage() {
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-    if (!isLoaded) return;
-    fetchCodes();
-  }, [isLoaded]);
+    checkAuthAndFetch();
+  }, []);
+
+  const checkAuthAndFetch = async () => {
+    try {
+      const res = await fetch('/api/auth/check');
+      if (res.ok) {
+        setIsAuthenticated(true);
+        fetchCodes();
+      } else {
+        setIsAuthenticated(false);
+        setLoading(false);
+      }
+    } catch {
+      setIsAuthenticated(false);
+      setLoading(false);
+    }
+  };
 
   const fetchCodes = async () => {
     try {
@@ -183,7 +197,7 @@ export default function AdminCodesPage() {
     }
   };
 
-  if (!isLoaded || loading) {
+  if (isAuthenticated === null || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20">
         <div className="text-center">
@@ -194,14 +208,14 @@ export default function AdminCodesPage() {
     );
   }
 
-  if (!userId) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-6">You need to be logged in as admin.</p>
-          <Link href="/sign-in" className="text-pink-600 hover:text-pink-700 font-semibold">
-            Sign In
+          <p className="text-gray-600 mb-6">Anda harus login terlebih dahulu.</p>
+          <Link href="/login" className="text-pink-600 hover:text-pink-700 font-semibold">
+            Login di sini
           </Link>
         </div>
       </div>

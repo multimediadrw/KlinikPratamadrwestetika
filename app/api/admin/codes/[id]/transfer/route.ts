@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
-import { auth } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/simple-auth';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(
@@ -9,15 +9,11 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { userId } = await auth();
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const session = await requireAuth();
 
     // Check if user is admin
     const adminUser = await prisma.user.findUnique({
-      where: { clerkUserId: userId },
+      where: { id: session.userId },
     });
 
     if (!adminUser?.isAdmin) {
